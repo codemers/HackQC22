@@ -80,6 +80,8 @@ export default function Profile() {
         <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
 
+      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-sm"><img src="/ma_borne_white.png" className="inline h-6 w-6 pr-1"/>Passer en mode "Ma Borne"</button>
+
     </Authenticated>
   );
 }
