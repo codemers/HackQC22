@@ -42,8 +42,6 @@ export default function Profile() {
       .catch(console.error);
   }, [user])
 
-  console.log("profile", profile)
-
   return (
     <Authenticated className="m-auto">
       <p className="text-center m-4">
