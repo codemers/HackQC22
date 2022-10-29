@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.AccountButtonGroup .AccountButton:first-of-type:not(:only-child) {
+    @apply rounded-b-none
+}
+
+.AccountButtonGroup .AccountButton:not(:first-of-type):not(:last-of-type) {
+    @apply rounded-none;
+}
+
+.AccountButtonGroup .AccountButton:last-of-type:not(:only-child) {
+    @apply rounded-t-none;
+}

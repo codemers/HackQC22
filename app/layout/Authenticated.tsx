@@ -7,13 +7,15 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app } from "../utils/firebaseConfig";
+import cx from "classix";
 
 type Props = {
   children: React.ReactNode;
   adminView?: boolean;
+  className?: string;
 };
 
-export default function Authenticated({ children, adminView }: Props) {
+export default function Authenticated({ children, adminView, className }: Props) {
   const auth = getAuth(app);
   const router = useRouter();
 
@@ -41,7 +43,7 @@ export default function Authenticated({ children, adminView }: Props) {
       className="flex flex-col justify-between overflow-scroll"
       style={{ height: "calc(100vh - 64px)" }}
     >
-      <div>{children}</div>
+      <div className={cx(className)}>{children}</div>
       <div className="absolute bottom-0 w-full">
         <Navigation adminView={adminView} />
       </div>
