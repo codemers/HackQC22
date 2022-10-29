@@ -18,7 +18,7 @@ module.exports = {
         scale: "scale 3s linear infinite",
       },
       backgroundImage: {
-        'login-background': "url('/images/login/login-background.png')",
+        'login-background': "url('/images/login/login-background.jpg')",
       },
       colors: {
         'primary': '#00A0B4',
