@@ -153,8 +153,11 @@ export default function Map() {
           <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b">
             <AdjustmentsHorizontalIcon className="w-5 h-5 text-gray-400" />
           </button>
-          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] rounded-b-md">
+          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b">
             <ArrowUpRightIcon className="w-5 h-5 text-gray-400" />
+          </button>
+          <button className="bg-white flex items-center justify-center px-3 border-gray-100 w-13 h-13 py-[14px] rounded-b-md">
+            <img src={"/images/map/car.png"} className="w-7" />
           </button>
         </div>
         <GoogleMapReact
@@ -184,6 +187,7 @@ export default function Map() {
           {/* @ts-ignore */}
           <LocationPin lat={geolocation.latitude} lng={geolocation.longitude} />
           {clusters.map((cluster) => {
+            console.log(cluster);
             const [longitude, latitude] = cluster.geometry.coordinates;
             const { cluster: isCluster, point_count: pointCount } =
               cluster.properties;
@@ -198,7 +202,9 @@ export default function Map() {
                   lng={longitude}
                   className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded-full"
                 >
-                  <span className="p-4 text-white font-bold">2</span>
+                  <span className="p-4 text-white font-bold">
+                    {cluster.properties.point_count}
+                  </span>
                 </div>
               );
             }
