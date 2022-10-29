@@ -6,6 +6,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import QueueListIcon from "@heroicons/react/20/solid/QueueListIcon";
+import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
+import InformationCircleIcon from "@heroicons/react/20/solid/InformationCircleIcon";
+import AdjustmentsHorizontalIcon from "@heroicons/react/20/solid/AdjustmentsHorizontalIcon";
+import ArrowUpRightIcon from "@heroicons/react/20/solid/ArrowUpRightIcon";
 
 function LocationPin({ lng, lat }: { lng: number; lat: number }) {
   return (
@@ -32,12 +36,35 @@ export default function Map() {
     <Authenticated>
       <div className="w-full h-screen flex justify-center">
         <div className="w-[90%] absolute flex mt-6 z-50">
-          <input
-            className="h-14 w-full bg-white rounded-md shadow-md mr-2 px-2"
-            placeholder="Borne, site ou adresse"
-          ></input>
-          <button className="bg-white flex items-center justify-center px-4 rounded-md shadow-md">
+          <div className="rounded-md shadow-sm w-full mr-2">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <MagnifyingGlassIcon
+                className="h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+            </div>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              className="block w-full rounded-md border-gray-100 pl-10  sm:text-sm"
+              placeholder="Borne, site ou adresse"
+            />
+          </div>
+
+          <button className="bg-white flex items-center justify-center px-4 rounded-md  border-gray-100">
             <QueueListIcon className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+        <div className="absolute z-50 right-5 top-20">
+          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b rounded-t-md">
+            <InformationCircleIcon className="w-5 h-5 text-gray-400" />
+          </button>
+          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b">
+            <AdjustmentsHorizontalIcon className="w-5 h-5 text-gray-400" />
+          </button>
+          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] rounded-b-md">
+            <ArrowUpRightIcon className="w-5 h-5 text-gray-400" />
           </button>
         </div>
         <GoogleMapReact
