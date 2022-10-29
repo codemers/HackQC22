@@ -3,6 +3,8 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
+const cors = require("cors")({ origin: true });
+
 exports.initializeUserOnCreate = functions.auth.user().onCreate(async (firebaseUser) => {
   const userId = firebaseUser.providerData[0].uid
 
@@ -22,3 +24,12 @@ exports.initializeUserOnDelete = functions.auth.user().onDelete(async (firebaseU
   const doc = admin.firestore().collection("users").doc(firebaseUser.uid);
   return doc.delete();
 })
+
+exports.syncData = functions.https.onRequest((request, response) => {
+  cors(request, response,  async () => {
+
+     // TODO Do code
+
+  });
+})
+

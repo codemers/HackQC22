@@ -1,5 +1,9 @@
 # HackQC22
 
+## Install
+```
+npm i firebase
+```
 
 ## Deploy Firebase Functions
 ```bash
