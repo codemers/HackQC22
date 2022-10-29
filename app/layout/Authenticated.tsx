@@ -15,7 +15,11 @@ type Props = {
   className?: string;
 };
 
-export default function Authenticated({ children, adminView, className }: Props) {
+export default function Authenticated({
+  children,
+  adminView,
+  className,
+}: Props) {
   const auth = getAuth(app);
   const router = useRouter();
 
@@ -44,7 +48,7 @@ export default function Authenticated({ children, adminView, className }: Props)
       style={{ height: "calc(100vh - 64px)" }}
     >
       <div className={cx(className)}>{children}</div>
-      <div className="absolute bottom-0 w-full">
+      <div className="absolute bottom-0 w-full border-t">
         <Navigation adminView={adminView} />
       </div>
     </div>
