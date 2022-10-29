@@ -2,7 +2,6 @@ import Authenticated from "../../../layout";
 import GoogleMapReact from "google-map-react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const defaultProps = {
   center: {
     lat: 10.99835602,
