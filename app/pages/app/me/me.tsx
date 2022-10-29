@@ -2,8 +2,8 @@ import Authenticated from "../../../layout";
 
 export default function Me() {
   return (
-    <Authenticated>
-      <h1>Me</h1>
+    <Authenticated adminView>
+      <h1>Mes bornes</h1>
     </Authenticated>
   );
 }

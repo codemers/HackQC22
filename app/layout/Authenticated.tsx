@@ -10,9 +10,10 @@ import { app } from "../utils/firebaseConfig";
 
 type Props = {
   children: React.ReactNode;
+  adminView?: boolean;
 };
 
-export default function Authenticated({ children }: Props) {
+export default function Authenticated({ children, adminView }: Props) {
   const auth = getAuth(app);
   const router = useRouter();
 
@@ -42,7 +43,7 @@ export default function Authenticated({ children }: Props) {
     >
       <div>{children}</div>
       <div className="absolute bottom-0 w-full">
-        <Navigation />
+        <Navigation adminView={adminView} />
       </div>
     </div>
   );
