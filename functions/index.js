@@ -26,9 +26,7 @@ exports.initializeUserOnDelete = functions.auth.user().onDelete(async (firebaseU
 
 // add cultural event to firebase
 exports.importCulturalEventsFromDataset = functions.https.onRequest((request, response) => {
-  console.log('-------------------------------------')
   console.log(request);
-  console.log('-------------------------------------')
   cors(request, response,  async () => {
     admin.firestore().collection("culturalEvents").add({
       city: request.body.city,
