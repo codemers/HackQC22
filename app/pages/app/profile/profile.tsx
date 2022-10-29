@@ -1,113 +1,84 @@
-import Link from "next/link";
+/* eslint-disable @next/next/no-img-element */
 import Authenticated from "../../../layout";
+
+import Image from "next/image";
+
+import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
+  GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
+  QuestionMarkCircleIcon, InformationCircleIcon, ArrowRightOnRectangleIcon} from "@heroicons/react/20/solid";
 
 import AccountButton from "../../../components/AccountButton/AccountButton";
 import AccountButtonGroup from "../../../components/AccountButtonGroup/AccountButtonGroup";
 
+import terminalImage from "../../../public/images/profile/ma-borne-white.png";
+import { getAuth, signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { app, database } from "../../../utils/firebaseConfig";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore"; 
+
 export default function Profile() {
+  const auth = getAuth(app);
+  const [user, loading, error] = useAuthState(auth);
+
+  const [profile, setProfile] = useState<any>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if(!user) return;
+      const usersRef = doc(database, "users", user.uid);
+      const docSnap = await getDoc(usersRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        setProfile(docSnap.data());
+
+      } else {
+        console.log("No such document!");
+      }
+    }
+  
+    fetchData()
+      .catch(console.error);
+  }, [user])
+
+  console.log("profile", profile)
+
   return (
     <Authenticated className="m-auto">
       <p className="text-center m-4">
-        <img
-          src="/avatar-3.jpg"
-          alt=""
-          className="inline-block h-10 w-10 mr-4 flex-none rounded-full"
-        />
-        Profile
+        <img src={profile?.photoUrl} alt=""/>
+        {profile?.name}
       </p>
 
       <AccountButtonGroup>
-        <AccountButton
-          title="Messagerie"
-          link="/app/messages"
-          icon="/avatar-3.jpg"
-        />
+        <AccountButton title="Méthodes de paiement" link="/app/payment" icon={<CreditCardIcon className="w-4 h-4 inline-block" />}/>
+      </AccountButtonGroup>
+      <AccountButtonGroup>
+        <AccountButton title="Offrir un cadeau" link="/app/gift" icon={<GiftIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Saisir un code recu" link="/app/gift-code" icon={<GiftIcon className="w-4 h-4 inline-block" />}/>
+      </AccountButtonGroup>
+      
+      <AccountButtonGroup>
+        <AccountButton title="Carte de membre" link="/app/transactions" icon={<CreditCardIcon className="w-4 h-4 inline-block" />}/>
       </AccountButtonGroup>
 
       <AccountButtonGroup>
-        <AccountButton
-          title="Méthodes de paiement"
-          link="/app/payment"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Paiements auto."
-          link="/app/payment-auto"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Historique des transactions"
-          link="/app/transactions"
-          icon="/avatar-3.jpg"
-        />
+        <AccountButton title="Mon compte" link="/app/my-account" icon={<UserCircleIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Mes véhicules" link="/app/my-vehicles" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Mes bornes" link="/app/me" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Préférences" link="/app/settings" icon={<Cog6ToothIcon className="w-4 h-4 inline-block" />}/>
       </AccountButtonGroup>
 
       <AccountButtonGroup>
-        <AccountButton
-          title="Offrir un cadeau"
-          link="/app/gift"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Saisir un code recu"
-          link="/app/gift-code"
-          icon="/avatar-3.jpg"
-        />
+        <AccountButton title="Boite à outils - FAQ" link="/app/faq" icon={<QuestionMarkCircleIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="À propos" link="/app/about" icon={<InformationCircleIcon className="w-4 h-4 inline-block" />}/>
       </AccountButtonGroup>
 
       <AccountButtonGroup>
-        <AccountButton
-          title="Carte de membre"
-          link="/app/transactions"
-          icon="/avatar-3.jpg"
-        />
+        <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
-
-      <AccountButtonGroup>
-        <AccountButton
-          title="Mon compte"
-          link="/app/my-account"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Mes véhicules"
-          link="/app/my-vehicles"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Mes bornes"
-          link="/app/my-terminal"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="Préférences"
-          link="/app/settings"
-          icon="/avatar-3.jpg"
-        />
-      </AccountButtonGroup>
-
-      <AccountButtonGroup>
-        <AccountButton
-          title="Boite à outils - FAQ"
-          link="/app/faq"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton
-          title="À propos"
-          link="/app/about"
-          icon="/avatar-3.jpg"
-        />
-      </AccountButtonGroup>
-
-      <AccountButtonGroup>
-        <AccountButton title="Admin" link="/app/me" icon="/avatar-3.jpg" />
-        <AccountButton
-          title="Mode normal"
-          link="/app/map"
-          icon="/avatar-3.jpg"
-        />
-        <AccountButton title="Signout" link="/signout" icon="/avatar-3.jpg" />
-      </AccountButtonGroup>
+      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-sm"><Image src={terminalImage} className="inline h-6 w-6 pr-1" alt=""/>Passer en mode &quot;Ma Borne&quot;</button>
     </Authenticated>
   );
 }
