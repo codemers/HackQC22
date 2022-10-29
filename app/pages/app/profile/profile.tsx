@@ -1,11 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import Authenticated from "../../../layout";
+
+import Image from "next/image";
+
 import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
   GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
   QuestionMarkCircleIcon, InformationCircleIcon, ArrowRightOnRectangleIcon} from "@heroicons/react/20/solid";
 
 import AccountButton from "../../../components/AccountButton/AccountButton";
 import AccountButtonGroup from "../../../components/AccountButtonGroup/AccountButtonGroup";
+
+import terminalImage from "../../public/images/profile/ma-borne-white.png";
 
 export default function Profile() {
   return (
@@ -53,6 +58,7 @@ export default function Profile() {
       <AccountButtonGroup>
         <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
+      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-sm"><Image src={terminalImage} className="inline h-6 w-6 pr-1" alt=""/>Passer en mode &quot;Ma Borne&quot;</button>
     </Authenticated>
   );
 }
