@@ -13,7 +13,7 @@ exports.initializeUserOnCreate = functions.auth.user().onCreate(async (firebaseU
     emailVerified: firebaseUser.emailVerified,
     phoneNumber: firebaseUser.phoneNumber,
     providerId: firebaseUser.providerData[0].providerId,
-    userId: userId,
+    userId: userId || "",
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   }, { ignoreUndefinedProperties: true } );
 });
