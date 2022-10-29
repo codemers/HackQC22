@@ -10,8 +10,11 @@ type AccountButtonProps = {
   
 export default function AccountButton(props: AccountButtonProps) {
     return (
-        <Link href={props.link} className="block p-2 m-4 border-solid border rounded-md">
-            <span className="pl-2 pr-4"><EnvelopeIcon className="w-4 h-4 inline-block" /></span><span className="">{props.title}</span>
+        <Link href={props.link} className="AccountButton block p-2 border-solid border rounded-md">
+            <span className="pl-2 pr-4">
+                <EnvelopeIcon className="w-4 h-4 inline-block" />
+            </span>
+            <span className="">{props.title}</span>
         </Link>
     )
 }
