@@ -10,6 +10,10 @@
     @apply rounded-none;
 }
 
+.AccountButtonGroup .AccountButton:not(:first-of-type):not(:last-of-type) {
+    @apply border-t-0;
+}
+
 .AccountButtonGroup .AccountButton:last-of-type:not(:only-child) {
-    @apply rounded-t-none;
+    @apply rounded-t-none border-t-0;
 }
