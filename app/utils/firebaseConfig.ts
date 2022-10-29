@@ -26,7 +26,6 @@ function init() {
   const functions = getFunctions(app);
 
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === "development") {
-    console.log("COUCO");
     const auth = getAuth();
     connectAuthEmulator(auth, "http://localhost:9099");
     connectFirestoreEmulator(database, "localhost", 8080);
