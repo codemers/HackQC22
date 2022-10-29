@@ -17,6 +17,14 @@ module.exports = {
       animation: {
         scale: "scale 3s linear infinite",
       },
+      backgroundImage: {
+        'login-background': "url('/images/login/login-background.png')",
+      },
+      colors: {
+        'primary': '#00A0B4',
+        'secondary': '#87B925',
+        'threedary': '#133B62',
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
