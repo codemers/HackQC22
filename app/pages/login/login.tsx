@@ -1,7 +1,11 @@
-import { database, app } from "../../utils/firebaseConfig";
+import { app } from "../../utils/firebaseConfig";
+import Image from "next/image";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
+
+import circuitElectriqueLogo from "../../public/images/login/circuit-electrique-logo.png";
+import googleLogo from "../../public/images/login/google-logo.png";
 
 export default function Login() {
   const auth = getAuth(app);
@@ -16,6 +20,7 @@ export default function Login() {
 
     const result = await signInWithPopup(auth, provider);
     const idToken = await result.user.getIdToken();
+
     localStorage.setItem("access_token", idToken);
   }
 
@@ -25,15 +30,20 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <button
-        onClick={async () => {
-          handleSignInWithGoogle();
-        }}
-      >
-        Sign In With Google
-      </button>
+    <div className="h-screen bg-login-background bg-cover bg-center">
+      <div className="hero container pb-10 h-3/6 flex flex-col items-center justify-end">
+        <Image className="mx-auto h-36 w-auto" src={circuitElectriqueLogo} alt={""} />
+      </div>
+      
+      <div className="flex justify-center items-center mx-auto h-3/6">
+        <button className="py-2 px-4 inline-flex items-center mx-auto h-16 bg-secondary rounded-md"
+          onClick={async () => {
+            handleSignInWithGoogle();
+          }}>
+            <Image src={googleLogo} alt={""} className="h-8 w-auto"/>
+            <span className="text-white ml-2">Sign In With Google</span>
+        </button>
+      </div>
     </div>
   );
 }

@@ -40,3 +40,10 @@ next-env.d.ts
 
 /app/.env.local
 emulator-data
+
+
+# python script
+/data/env
+
+# data analysis
+/data/*.xlsx
