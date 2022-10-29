@@ -1,6 +1,5 @@
 import Link from "next/link";
 import cx from "classix";
-import MapPin from "@heroicons/react/20/solid/MapPinIcon";
 
 type Props = {
   adminView?: boolean;
@@ -13,7 +12,7 @@ function BottomNav({
 }: {
   label: string;
   href?: string;
-  icon: any;
+  icon?: any;
 }) {
   if (!href) {
     return <span>{label}</span>;
