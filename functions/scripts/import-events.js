@@ -16,14 +16,10 @@ for (let i = 1; i < array.length -1 ; i++) {
 
   axios.post('http://localhost:5001/hackqc2022-8347e/us-central1/importCulturalEventsFromDataset', obj)
     .then(function (response) {
-      console.log('-------------------------------------')
       console.log(response);
-      console.log('-------------------------------------')
     })
     .catch(function (error) {
-      console.log('-------------------------------------')
       console.log(error);
-      console.log('-------------------------------------')
     });
 }
 
