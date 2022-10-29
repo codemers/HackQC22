@@ -23,7 +23,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
-    "react-hook-geolocation": "^1.1.0"
+    "react-hook-geolocation": "^1.1.0",
+    "use-supercluster": "^0.4.0"
   },
   "devDependencies": {
     "@types/google-map-react": "^2.1.7",

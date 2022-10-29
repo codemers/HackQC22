@@ -3,13 +3,15 @@ import GoogleMapReact from "google-map-react";
 import useGeolocation from "react-hook-geolocation";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useSupercluster from "use-supercluster";
 
 import QueueListIcon from "@heroicons/react/20/solid/QueueListIcon";
 import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
 import InformationCircleIcon from "@heroicons/react/20/solid/InformationCircleIcon";
 import AdjustmentsHorizontalIcon from "@heroicons/react/20/solid/AdjustmentsHorizontalIcon";
 import ArrowUpRightIcon from "@heroicons/react/20/solid/ArrowUpRightIcon";
+import cx from "classix";
 
 function LocationPin({ lng, lat }: { lng: number; lat: number }) {
   return (
@@ -25,8 +27,96 @@ function LocationPin({ lng, lat }: { lng: number; lat: number }) {
   );
 }
 
+type State = "private" | "public";
+
+function TerminalPin({
+  id,
+  lng,
+  lat,
+  zoom,
+  onClick,
+  state,
+}: {
+  id: string;
+  lng: number;
+  lat: number;
+  zoom: number;
+  onClick: (id: string) => void;
+  state: State;
+}) {
+  if (zoom <= 14) {
+    return (
+      <button
+        // @ts-ignore
+        lat={lat}
+        lng={lng}
+        className="bg-white rounded-full w-6 h-6 flex items-center justify-center"
+      >
+        <div
+          className={cx(
+            "w-4 h-4 rounded-full",
+            state === "private" ? "bg-pink-500" : "bg-green-500"
+          )}
+        ></div>
+      </button>
+    );
+  }
+  return (
+    // @ts-ignore
+    <button
+      // @ts-ignore
+      lat={lat}
+      lng={lng}
+      className={cx(
+        "rounded-md flex items-center px-2 w-20 h-10",
+        state === "private" ? "bg-pink-500" : "bg-green-500"
+      )}
+      onClick={() => onClick(id)}
+    >
+      <div className="w-4 h-4 bg-gray-500 "></div>
+    </button>
+  );
+}
+
 export default function Map() {
   const geolocation = useGeolocation();
+  const [zoom, setZoom] = useState(11);
+  const [bounds, setBounds] = useState(null);
+  const mapRef = useRef();
+
+  const [selectedTerminal, setSelectedTerminal] = useState<string>();
+  const [terminals, setTerminals] = useState([
+    {
+      lat: 45.61634620767123,
+      lng: -73.55157011723178,
+      id: "123",
+      state: "public" as State,
+    },
+    {
+      lat: 45.6074819,
+      lng: -73.5865146,
+      id: "1234",
+      state: "private" as State,
+    },
+  ]);
+
+  const { clusters, supercluster } = useSupercluster({
+    points: terminals.map((t) => {
+      return {
+        type: t.state,
+        properties: {
+          cluster: false,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [t.lng, t.lat],
+        },
+      };
+    }),
+    bounds,
+    zoom,
+    options: { radius: 75, maxZoom: 10 },
+  });
 
   if (!geolocation.longitude || !geolocation.latitude) {
     return null;
@@ -73,12 +163,61 @@ export default function Map() {
             lat: geolocation.latitude,
             lng: geolocation.longitude,
           }}
+          onZoomAnimationEnd={(zoom) => setZoom(zoom)}
           options={{ zoomControl: false, fullscreenControl: false }}
-          defaultZoom={11}
+          zoom={zoom}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map }) => {
+            mapRef.current = map;
+          }}
+          onChange={({ zoom, bounds }) => {
+            setZoom(zoom);
+            // @ts-ignore
+            setBounds([
+              bounds.nw.lng,
+              bounds.se.lat,
+              bounds.se.lng,
+              bounds.nw.lat,
+            ]);
+          }}
         >
-          {/* @ts-ignore */}
-          <LocationPin lat={geolocation.latitude} lng={geolocation.longitude} />
+          {clusters.map((cluster) => {
+            const [longitude, latitude] = cluster.geometry.coordinates;
+            const { cluster: isCluster, point_count: pointCount } =
+              cluster.properties;
+
+            if (isCluster) {
+              // @ts-ignore
+              return (
+                <div
+                  key={cluster.id}
+                  // @ts-ignore
+                  lat={latitude}
+                  lng={longitude}
+                  className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded-full"
+                >
+                  <span className="p-4 text-white font-bold">2</span>
+                </div>
+              );
+            }
+
+            return (
+              <TerminalPin
+                key={cluster.id}
+                id={cluster.id}
+                lng={longitude}
+                lat={latitude}
+                zoom={zoom}
+                onClick={(id) => setSelectedTerminal(id)}
+                state={cluster.type}
+              />
+            );
+          })}
         </GoogleMapReact>
+
+        {selectedTerminal && (
+          <div className="absolute bottom-[64px] w-full h-64 bg-white"></div>
+        )}
       </div>
     </Authenticated>
   );
