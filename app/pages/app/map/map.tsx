@@ -1,10 +1,8 @@
 import Authenticated from "../../../layout";
 import GoogleMapReact from "google-map-react";
 import useGeolocation from "react-hook-geolocation";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
 import useSupercluster from "use-supercluster";
+import { useRef, useState } from "react";
 
 import QueueListIcon from "@heroicons/react/20/solid/QueueListIcon";
 import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
@@ -12,6 +10,7 @@ import InformationCircleIcon from "@heroicons/react/20/solid/InformationCircleIc
 import AdjustmentsHorizontalIcon from "@heroicons/react/20/solid/AdjustmentsHorizontalIcon";
 import ArrowUpRightIcon from "@heroicons/react/20/solid/ArrowUpRightIcon";
 import cx from "classix";
+import TerminalCard from "../../../components/TerminalCard/TerminalCard";
 
 function LocationPin({ lng, lat }: { lng: number; lat: number }) {
   return (
@@ -104,6 +103,7 @@ export default function Map() {
     points: terminals.map((t) => {
       return {
         type: t.state,
+        id: t.id,
         properties: {
           cluster: false,
         },
@@ -170,6 +170,9 @@ export default function Map() {
           options={{ zoomControl: false, fullscreenControl: false }}
           zoom={zoom}
           yesIWantToUseGoogleMapApiInternals
+          onClick={() =>
+            selectedTerminal ? setSelectedTerminal(undefined) : () => {}
+          }
           onGoogleApiLoaded={({ map }) => {
             mapRef.current = map;
           }}
@@ -216,7 +219,7 @@ export default function Map() {
                 lng={longitude}
                 lat={latitude}
                 zoom={zoom}
-                onClick={(id) => setSelectedTerminal(id)}
+                onClick={setSelectedTerminal}
                 state={cluster.type}
               />
             );
@@ -224,7 +227,9 @@ export default function Map() {
         </GoogleMapReact>
 
         {selectedTerminal && (
-          <div className="absolute bottom-[64px] w-full h-64 bg-white"></div>
+          <div className="absolute bottom-[64px] w-full z-50">
+            <TerminalCard onClose={() => setSelectedTerminal(undefined)} />
+          </div>
         )}
       </div>
     </Authenticated>
