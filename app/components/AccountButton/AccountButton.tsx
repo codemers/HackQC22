@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {ChevronRightIcon} from "@heroicons/react/20/solid";
 
 type AccountButtonProps = {
     icon: JSX.Element,
@@ -13,7 +14,11 @@ export default function AccountButton(props: AccountButtonProps) {
             <span className="pl-2 pr-4">
                 {props.icon}
             </span>
-            <span className="">{props.title}</span>
+            <div className="inline w-full h-full">
+                <span className="">{props.title}</span>
+                <span><ChevronRightIcon className="w-4 h-4 inline-block float-right"/></span>
+            </div>
+
         </Link>
     )
 }
