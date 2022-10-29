@@ -48,4 +48,4 @@ emulator-data
 # data analysis
 /data/*.xlsx
 
-ui-debug.log
+*.log
