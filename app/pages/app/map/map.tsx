@@ -11,6 +11,7 @@ function LocationPin({ lng, lat }: { lng: number; lat: number }) {
   return (
     // @ts-ignore
     <div
+      // @ts-ignore
       lat={lat}
       lng={lng}
       className="bg-white rounded-full w-6 h-6 flex items-center justify-center"
