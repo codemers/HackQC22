@@ -181,6 +181,8 @@ export default function Map() {
             ]);
           }}
         >
+          {/* @ts-ignore */}
+          <LocationPin lat={geolocation.latitude} lng={geolocation.longitude} />
           {clusters.map((cluster) => {
             const [longitude, latitude] = cluster.geometry.coordinates;
             const { cluster: isCluster, point_count: pointCount } =
