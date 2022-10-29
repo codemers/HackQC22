@@ -42,12 +42,10 @@ export default function Profile() {
       .catch(console.error);
   }, [user])
 
-  console.log("profile", profile)
-
   return (
     <Authenticated className="m-auto">
       <p className="text-center m-4">
-        <img src={profile?.photoUrl} alt=""/>
+        <img className="inline w-14" src={profile?.photoUrl} alt=""/>
         {profile?.name}
       </p>
 
@@ -78,7 +76,10 @@ export default function Profile() {
       <AccountButtonGroup>
         <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
-      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-sm"><Image src={terminalImage} className="inline h-6 w-6 pr-1" alt=""/>Passer en mode &quot;Ma Borne&quot;</button>
+      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-xs mb-4"
+      onClick={() => window.location.href='/app/terminal/me'} >
+        <Image src={terminalImage} className="inline h-6 w-6 mr-2" alt=""/> Passer en mode &quot;Ma Borne&quot;
+      </button>
     </Authenticated>
   );
 }
