@@ -35,4 +35,6 @@ function init() {
   return { app, database };
 }
 
-export const { database, app } = init();
+const { database, app } = init();
+
+export { database, app };
