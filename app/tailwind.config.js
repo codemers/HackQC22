@@ -6,7 +6,18 @@ module.exports = {
     "./layout/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        scale: {
+          "0%": { transform: "scale(0.70)" },
+          "50%": { transform: "scale(1)" },
+          "100%": { transform: "scale(0.70)" },
+        },
+      },
+      animation: {
+        scale: "scale 3s linear infinite",
+      },
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

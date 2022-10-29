@@ -6,10 +6,13 @@ import { useRouter } from "next/router";
 export default function Login() {
   const auth = getAuth(app);
   const [user, loading, error] = useAuthState(auth);
+
+  console.log(user);
   const router = useRouter();
 
   async function handleSignInWithGoogle() {
     const provider = new GoogleAuthProvider();
+    provider.addScope("profile");
 
     const result = await signInWithPopup(auth, provider);
     const idToken = await result.user.getIdToken();
