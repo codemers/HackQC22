@@ -47,5 +47,7 @@ emulator-data
 
 # data analysis
 /data/*.xlsx
+output.json
+
 
 *.log
