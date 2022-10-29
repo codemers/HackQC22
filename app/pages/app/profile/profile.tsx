@@ -10,7 +10,7 @@ import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon,
 import AccountButton from "../../../components/AccountButton/AccountButton";
 import AccountButtonGroup from "../../../components/AccountButtonGroup/AccountButtonGroup";
 
-import terminalImage from "../../public/images/profile/ma-borne-white.png";
+import terminalImage from "../../../public/images/profile/ma-borne-white.png";
 
 export default function Profile() {
   return (
