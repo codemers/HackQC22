@@ -26,7 +26,6 @@ exports.initializeUserOnDelete = functions.auth.user().onDelete(async (firebaseU
 
 // add cultural event to firebase
 exports.importCulturalEventsFromDataset = functions.https.onRequest((request, response) => {
-  console.log(request);
   cors(request, response,  async () => {
     admin.firestore().collection("culturalEvents").add({
       city: request.body.city,
@@ -36,3 +35,43 @@ exports.importCulturalEventsFromDataset = functions.https.onRequest((request, re
     response.status(200).send("OK");
   });
 });
+
+// add stations 
+exports.importCircuitElectriqueStations = functions.https.onRequest(  (request, response) => {
+  // console.log(request.body);
+  cors(request, response,  async () => {
+    try {
+      await admin.firestore().collection("stations").add(
+        request.body
+      );
+      response.status(200).send("OK");
+    }
+    catch (error) {
+      console.log(error);
+  }});
+});
+
+
+// add parks
+exports.importParks = functions.https.onRequest((request, response) => {
+  cors(request, response,  async () => {
+    admin.firestore().collection("parks").add(
+      request.body
+    );
+    response.status(200).send("OK");
+  });
+});
+
+
+
+
+
+// get all stations
+// exports.getStations = functions.https.onRequest((request, response) => {
+//   cors(request, response,  async () => {
+//     const stations = await admin.firestore().collection("stations").get();
+//     const stationsArray = stations.docs.map((doc) => doc.data());
+//     console.log(stationsArray.length);
+//     response.status(200).send(stationsArray);
+//   });
+// });
