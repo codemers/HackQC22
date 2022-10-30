@@ -4,6 +4,7 @@ import { useState } from "react";
 import XMarkIcon from "@heroicons/react/20/solid/XMarkIcon";
 import { Park } from "../../pages/app/map/map";
 import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   onClose: () => void;
@@ -19,15 +20,18 @@ export default function ParkCard(props: Props) {
 
   return (
     <div>
-      {!isExpanded && (
-        <img
-          src={"/images/map/image-terminal.png"}
-          className="w-full h-32 rounded-t-2xl object-cover"
-        />
-      )}
+      {/* {!isExpanded && ( */}
+      <img
+        src={"/images/map/image-terminal.png"}
+        className={cx(
+          "w-full h-32 object-cover",
+          !isExpanded && "rounded-t-2xl"
+        )}
+      />
+      {/* )} */}
       <div
         className={cx("bg-white p-4 flex flex-col items-start border-b")}
-        style={{ height: isExpanded ? "calc(100vh - 64px)" : "128" }}
+        style={{ height: isExpanded ? "calc(100vh - 192px)" : "128" }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {!isExpanded && (
@@ -38,10 +42,17 @@ export default function ParkCard(props: Props) {
           </div>
         )}
         <div className="flex w-full justify-center">
-          <button
-            onClick={props.onClose}
-            className="bg-gray-300 w-6 h-1 rounded-md"
-          ></button>
+          {!isExpanded && (
+            <button
+              onClick={props.onClose}
+              className="bg-gray-300 w-6 h-1 rounded-md"
+            ></button>
+          )}
+          {isExpanded && (
+            <button onClick={props.onClose} className="-mt-4">
+              <ChevronDownIcon className="w-8 text-gray-300" />
+            </button>
+          )}
         </div>
         <div className="flex justify-between w-full">
           <h1>{park.parkName}</h1>
@@ -99,6 +110,15 @@ export default function ParkCard(props: Props) {
             <span className="text-black text-sm">{terminals[0].type}</span>
           </div>
         </div>
+        {isExpanded && (
+          <>
+            <p className={cx("mt-2")}>
+              <span className="text-black text-sm">{park.streetAddress}</span>
+            </p>
+
+            {/* <button></button> */}
+          </>
+        )}
       </div>
     </div>
   );
