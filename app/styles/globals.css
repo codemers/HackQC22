@@ -17,3 +17,11 @@
 .AccountButtonGroup .AccountButton:last-of-type:not(:only-child) {
     @apply rounded-t-none border-t-0;
 }
+
+#terminal-list .TerminalButton:first-of-type {
+    @apply rounded-t-md;
+}
+
+#terminal-list .TerminalButton:last-of-type {
+    @apply rounded-b-md;
+}
