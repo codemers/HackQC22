@@ -63,15 +63,32 @@ exports.importParks = functions.https.onRequest((request, response) => {
 });
 
 
+// make all terminals of all parks unavailable in a given city
+exports.makeParksUnavailableInCity = functions.https.onRequest((request, response) => {
+  cors(request, response,  async () => {
+    const city = request.body.city;
+    console.log(city);
+    const parks = await admin.firestore().collection("parks").where('city', '==', city).where('type', '==', 'public').get();
 
+    parks.forEach(async (park) => {
+      const terminals = park.data().terminals;
+      console.log(terminals);
 
+      let updatedTerminals = [];
+      
+      terminals.forEach(async (terminal) => {
+        updatedTerminals.push({
+          ...terminal,
+          status: 'unavailable',
+        });
+      });
+      console.log(updatedTerminals);
 
-// get all stations
-// exports.getStations = functions.https.onRequest((request, response) => {
-//   cors(request, response,  async () => {
-//     const stations = await admin.firestore().collection("stations").get();
-//     const stationsArray = stations.docs.map((doc) => doc.data());
-//     console.log(stationsArray.length);
-//     response.status(200).send(stationsArray);
-//   });
-// });
+      await admin.firestore().collection("parks").doc(park.id).update({
+        'terminals': updatedTerminals,
+      });
+
+    });
+    response.status(200).send("OK");
+  });
+});

@@ -1,13 +1,7 @@
 const axios = require('axios').default;
 const fs = require("fs");
 
-
-
-
 stationsJson = JSON.parse(fs.readFileSync("../../data/dataset/circuit-electrique/liste-complete-des-bornes-accents.json", "utf8"));
-// const array = csv_events.toString().split("\r");
-// const header = array[0].split(",");
-
 
 // let stationsJson = {}
 let parksJson = {}
@@ -45,13 +39,11 @@ stationsJson.forEach(station => {
     }
 })
 
-// log the first 5 elements of the array
-console.log(stationsJson.slice(0, 5));
-
-// add list of stations to park
+// fill parksJson
 stationsJson.forEach(station => {
     parksJson[station['parkName']] = {
         adresse: station['address'],
+        city: station['city'],
         latitude: station['latitude'],
         longitude: station['longitude'],
         owner: station['owner'],
@@ -69,15 +61,12 @@ stationsJson.forEach(station => {
     parksJson[station['parkName']]['terminals'].push(station);
 })
 
-// log the first 5 elements of the array
-console.log(parksJson);
-
 for(var key in parksJson) {
     axios.post('https://us-central1-hackqc2022-8347e.cloudfunctions.net/importParks', parksJson[key])
     .then(function (response) {
-        console.log(response);
+        // console.log(response);
     })
     .catch(function (error) {
-        console.log(error);
+        // console.log(error);
     });
 };
