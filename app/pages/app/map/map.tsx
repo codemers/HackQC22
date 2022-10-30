@@ -2,7 +2,7 @@ import Authenticated from "../../../layout";
 import GoogleMapReact from "google-map-react";
 import useGeolocation from "react-hook-geolocation";
 import useSupercluster from "use-supercluster";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import QueueListIcon from "@heroicons/react/20/solid/QueueListIcon";
 import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
@@ -13,6 +13,9 @@ import cx from "classix";
 import ParkCard from "../../../components/ParkCard/ParkCard";
 
 import MapCmp from "../../../components/Map/Map";
+import { database } from "../../../utils/firebaseConfig";
+import { collection, getDocs, query } from "firebase/firestore";
+
 export type Park = {
   id: string;
   parkName: string;
@@ -21,6 +24,7 @@ export type Park = {
   state: State;
   terminals: { name: string; available: boolean; type: string }[];
   city: string;
+  streetAddress: string;
 };
 
 function LocationPin({ lng, lat }: { lng: number; lat: number }) {
@@ -108,9 +112,39 @@ function TerminalPin({
 
 export default function Map() {
   const geolocation = useGeolocation();
-  const [zoom, setZoom] = useState(18);
+  const [zoom, setZoom] = useState(10);
   const [bounds, setBounds] = useState(null);
   const mapRef = useRef();
+
+  useEffect(() => {
+    async function fetchParks() {
+      const querySnapshot = await getDocs(query(collection(database, "parks")));
+      const parks: Park[] = [];
+      querySnapshot.forEach((doc) => {
+        const park = doc.data();
+
+        parks.push({
+          id: doc.id,
+          parkName: park.name,
+          lng: parseFloat(park.longitude),
+          lat: parseFloat(park.latitute),
+          state: park.type,
+          // @ts-ignore
+          terminals: park.terminals.map((t) => ({
+            name: t.stationName,
+            available: true,
+            type: park.status === "available",
+          })),
+          city: park.region,
+          streetAddress: park.street,
+        });
+      });
+
+      setParks(parks);
+    }
+
+    fetchParks();
+  }, []);
 
   const [selectedPark, setSelectedPark] = useState<string>();
   const [parks, setParks] = useState<Park[]>([
@@ -125,6 +159,7 @@ export default function Map() {
         { name: "CAE-345", available: true, type: "Niveau 2" },
         { name: "CAE-346", available: false, type: "Niveau 1" },
       ],
+      streetAddress: "1095 rue McCrea",
     },
     {
       id: "123",
@@ -137,6 +172,7 @@ export default function Map() {
         { name: "CAE-345", available: true, type: "Niveau 2" },
         { name: "CAE-346", available: false, type: "Niveau 1" },
       ],
+      streetAddress: "1095 rue McCrea",
     },
     {
       id: "1234",
@@ -149,6 +185,7 @@ export default function Map() {
         { name: "CAE-345", available: true, type: "Niveau 2" },
         { name: "CAE-346", available: false, type: "Niveau 1" },
       ],
+      streetAddress: "1095 rue McCrea",
     },
   ]);
 
@@ -168,7 +205,7 @@ export default function Map() {
     }),
     bounds,
     zoom,
-    options: { radius: 475, maxZoom: 25 },
+    options: { radius: 275, maxZoom: 35 },
   });
 
   if (!geolocation.longitude || !geolocation.latitude) {
