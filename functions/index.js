@@ -38,7 +38,7 @@ exports.importCulturalEventsFromDataset = functions.https.onRequest((request, re
 
 // add stations 
 exports.importCircuitElectriqueStations = functions.https.onRequest(  (request, response) => {
-  console.log(request.body);
+  // console.log(request.body);
   cors(request, response,  async () => {
     try {
       await admin.firestore().collection("stations").add(
