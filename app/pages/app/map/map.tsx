@@ -56,23 +56,6 @@ function TerminalPin({
   state: State;
   park?: Park;
 }) {
-  if (zoom <= 14) {
-    return (
-      <button
-        // @ts-ignore
-        lat={lat}
-        lng={lng}
-        className="bg-white rounded-full w-6 h-6 flex items-center justify-center"
-      >
-        <div
-          className={cx(
-            "w-4 h-4 rounded-full",
-            state === "private" ? "bg-pink-500" : "bg-green-500"
-          )}
-        ></div>
-      </button>
-    );
-  }
   return (
     // @ts-ignore
     <button
@@ -185,7 +168,7 @@ export default function Map() {
     }),
     bounds,
     zoom,
-    options: { radius: 275, maxZoom: 10 },
+    options: { radius: 475, maxZoom: 25 },
   });
 
   if (!geolocation.longitude || !geolocation.latitude) {
@@ -255,7 +238,7 @@ export default function Map() {
                   // @ts-ignore
                   lat={latitude}
                   lng={longitude}
-                  className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded-full"
+                  className="w-8 h-8 bg-[#50b0C6] flex items-center justify-center rounded-full"
                 >
                   <span className="p-4 text-white font-bold">
                     {cluster.properties.point_count}
