@@ -27,7 +27,9 @@ function init() {
 
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === "development") {
     const auth = getAuth();
-    connectAuthEmulator(auth, "http://localhost:9099");
+    connectAuthEmulator(auth, "http://localhost:9099", {
+      disableWarnings: true,
+    });
     connectFirestoreEmulator(database, "localhost", 8080);
     connectFunctionsEmulator(functions, "localhost", 5001);
   }
