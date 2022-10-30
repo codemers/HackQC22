@@ -1,22 +1,28 @@
-import {ChevronRightIcon, PlusCircleIcon} from "@heroicons/react/24/outline";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/jsx-no-undef */
+import {ChevronRightIcon} from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 type TerminalButtonProps = {
-    title: string;
-    subtitle: string;
-    icon: any;
+    uid: string;
+    name: string;
+    address: string;
+    image: string;
 };
-  
+
 export default function TerminalButton(props: TerminalButtonProps) {
     return (
-        <div className="TerminalButton flex p-3 ml-6 mr-6 bg-white">
-            <span><PlusCircleIcon className="w-8 h-8 mr-8 inline-block float-left"/></span>
-            <div className="w-4/5">
+        <Link href={"/app/terminal/list/" + props.uid} className="TerminalButton p-3 ml-6 mr-6 bg-white grid grid-cols-6">
+            <span className="m-auto text-center">
+                <img src={props.image} alt="" className="w-12 h-12"/>
+            </span>
+            <span className="col-span-4 flex">
                 <div className="flex-column flex-grow flex-wrap">
-                    <span className="title block">{props.title}</span>
-                    <span className="subtitle block">{props.subtitle}</span>
+                    <span className="title block">{props.name}</span>
+                    <span className="subtitle block">{props.address}</span>
                 </div>
-            </div>
+            </span>
             <span><ChevronRightIcon className="w-4 h-4 inline-block float-right"/></span>
-        </div>
+        </Link>
     )
 }

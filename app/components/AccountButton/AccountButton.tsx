@@ -5,7 +5,6 @@ type AccountButtonProps = {
     icon: JSX.Element,
     title: string,
     link: string,
-
 };
   
 export default function AccountButton(props: AccountButtonProps) {

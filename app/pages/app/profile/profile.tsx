@@ -1,18 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import Authenticated from "../../../layout";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
-  GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
+import { CreditCardIcon, GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
   QuestionMarkCircleIcon, InformationCircleIcon, ArrowRightOnRectangleIcon} from "@heroicons/react/20/solid";
 
 import AccountButton from "../../../components/AccountButton/AccountButton";
 import AccountButtonGroup from "../../../components/AccountButtonGroup/AccountButtonGroup";
 
 import terminalImage from "../../../public/images/profile/ma-borne-white.png";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, database } from "../../../utils/firebaseConfig";
 import { useEffect, useState } from "react";
@@ -44,7 +42,7 @@ export default function Profile() {
   }, [user])
 
   return (
-    <Authenticated className="m-auto">
+    <Authenticated className="m-auto w-4/5">
       <p className="text-center m-4">
         <img className="inline w-14" src={profile?.photoUrl} alt=""/>
         {profile?.name}
@@ -65,7 +63,7 @@ export default function Profile() {
       <AccountButtonGroup>
         <AccountButton title="Mon compte" link="/app/my-account" icon={<UserCircleIcon className="w-4 h-4 inline-block" />}/>
         <AccountButton title="Mes véhicules" link="/app/my-vehicles" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
-        <AccountButton title="Mes bornes" link="/app/me" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Mes bornes" link="/app/terminal/list" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
         <AccountButton title="Préférences" link="/app/settings" icon={<Cog6ToothIcon className="w-4 h-4 inline-block" />}/>
       </AccountButtonGroup>
 
