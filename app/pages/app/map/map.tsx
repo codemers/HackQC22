@@ -12,6 +12,7 @@ import ArrowUpRightIcon from "@heroicons/react/20/solid/ArrowUpRightIcon";
 import cx from "classix";
 import ParkCard from "../../../components/ParkCard/ParkCard";
 
+import MapCmp from "../../../components/Map/Map";
 export type Park = {
   id: string;
   parkName: string;
@@ -131,12 +132,36 @@ export default function Map() {
   const [selectedPark, setSelectedPark] = useState<string>();
   const [parks, setParks] = useState<Park[]>([
     {
-      id: "Mon=-id",
+      id: "12",
       lat: 45.32771818115786,
       lng: -72.52708030990577,
       parkName: "Parc de la Gatineau",
       state: "public" as State,
       city: "Orford",
+      terminals: [
+        { name: "CAE-345", available: true, type: "Niveau 2" },
+        { name: "CAE-346", available: false, type: "Niveau 1" },
+      ],
+    },
+    {
+      id: "123",
+      lat: 45.52771818115786,
+      lng: -72.52708030990577,
+      parkName: "Parc de la Gati1neau",
+      state: "public" as State,
+      city: "Orf4ord",
+      terminals: [
+        { name: "CAE-345", available: true, type: "Niveau 2" },
+        { name: "CAE-346", available: false, type: "Niveau 1" },
+      ],
+    },
+    {
+      id: "1234",
+      lat: 45.52771818115786,
+      lng: -73.52708030990577,
+      parkName: "Parc de la Gatin3eau",
+      state: "public" as State,
+      city: "Orfo6rd",
       terminals: [
         { name: "CAE-345", available: true, type: "Niveau 2" },
         { name: "CAE-346", available: false, type: "Niveau 1" },
@@ -160,7 +185,7 @@ export default function Map() {
     }),
     bounds,
     zoom,
-    options: { radius: 75, maxZoom: 10 },
+    options: { radius: 275, maxZoom: 10 },
   });
 
   if (!geolocation.longitude || !geolocation.latitude) {
@@ -205,41 +230,23 @@ export default function Map() {
             <img src={"/images/map/car.png"} className="w-7" />
           </button>
         </div>
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
-          }}
-          defaultCenter={{
+
+        <MapCmp
+          center={{
             lat: geolocation.latitude,
             lng: geolocation.longitude,
           }}
-          onZoomAnimationEnd={(zoom) => setZoom(zoom)}
-          options={{ zoomControl: false, fullscreenControl: false }}
-          zoom={zoom}
-          yesIWantToUseGoogleMapApiInternals
+          onBoundsChange={setBounds}
           onClick={() => (selectedPark ? setSelectedPark(undefined) : () => {})}
-          onGoogleApiLoaded={({ map }) => {
-            mapRef.current = map;
-          }}
-          onChange={({ zoom, bounds }) => {
-            setZoom(zoom);
-            // @ts-ignore
-            setBounds([
-              bounds.nw.lng,
-              bounds.se.lat,
-              bounds.se.lng,
-              bounds.nw.lat,
-            ]);
-          }}
+          zoom={zoom}
+          onZoomChange={setZoom}
         >
-          {/* @ts-ignore */}
           <LocationPin lat={geolocation.latitude} lng={geolocation.longitude} />
           {clusters.map((cluster) => {
-            console.log(cluster);
             const [longitude, latitude] = cluster.geometry.coordinates;
             const { cluster: isCluster, point_count: pointCount } =
               cluster.properties;
-            console.log(cluster.id);
+
             if (isCluster) {
               // @ts-ignore
               return (
@@ -270,7 +277,7 @@ export default function Map() {
               />
             );
           })}
-        </GoogleMapReact>
+        </MapCmp>
 
         {selectedPark && parks.find((p) => p.id === selectedPark) && (
           <div className="absolute bottom-[64px] w-full z-50">
