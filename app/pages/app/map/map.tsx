@@ -127,7 +127,7 @@ export default function Map() {
           id: doc.id,
           parkName: park.name,
           lng: parseFloat(park.longitude),
-          lat: parseFloat(park.latitute),
+          lat: parseFloat(park.latitude),
           state: park.type,
           // @ts-ignore
           terminals: park.terminals.map((t) => ({
@@ -147,47 +147,7 @@ export default function Map() {
   }, []);
 
   const [selectedPark, setSelectedPark] = useState<string>();
-  const [parks, setParks] = useState<Park[]>([
-    {
-      id: "12",
-      lat: 45.32771818115786,
-      lng: -72.52708030990577,
-      parkName: "Parc de la Gatineau",
-      state: "public" as State,
-      city: "Orford",
-      terminals: [
-        { name: "CAE-345", available: true, type: "Niveau 2" },
-        { name: "CAE-346", available: false, type: "Niveau 1" },
-      ],
-      streetAddress: "1095 rue McCrea",
-    },
-    {
-      id: "123",
-      lat: 45.52771818115786,
-      lng: -72.52708030990577,
-      parkName: "Parc de la Gati1neau",
-      state: "public" as State,
-      city: "Orf4ord",
-      terminals: [
-        { name: "CAE-345", available: true, type: "Niveau 2" },
-        { name: "CAE-346", available: false, type: "Niveau 1" },
-      ],
-      streetAddress: "1095 rue McCrea",
-    },
-    {
-      id: "1234",
-      lat: 45.52771818115786,
-      lng: -73.52708030990577,
-      parkName: "Parc de la Gatin3eau",
-      state: "public" as State,
-      city: "Orfo6rd",
-      terminals: [
-        { name: "CAE-345", available: true, type: "Niveau 2" },
-        { name: "CAE-346", available: false, type: "Niveau 1" },
-      ],
-      streetAddress: "1095 rue McCrea",
-    },
-  ]);
+  const [parks, setParks] = useState<Park[]>([]);
 
   const { clusters, supercluster } = useSupercluster({
     points: parks.map((t) => {
