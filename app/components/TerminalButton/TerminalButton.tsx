@@ -4,6 +4,7 @@ import {ChevronRightIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 type TerminalButtonProps = {
+    uid: string;
     name: string;
     address: string;
     image: string;
@@ -11,7 +12,7 @@ type TerminalButtonProps = {
 
 export default function TerminalButton(props: TerminalButtonProps) {
     return (
-        <Link href={"/app/terminal/list/" + props.name} className="TerminalButton p-3 ml-6 mr-6 bg-white grid grid-cols-6">
+        <Link href={"/app/terminal/list/" + props.uid} className="TerminalButton p-3 ml-6 mr-6 bg-white grid grid-cols-6">
             <span className="m-auto text-center">
                 <img src={props.image} alt="" className="w-12 h-12"/>
             </span>

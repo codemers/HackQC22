@@ -28,7 +28,7 @@ export default function List() {
 
     fetchData()
         .catch(console.error);
-    }, [user])
+    }, [user]);
 
     console.log("Terminals", terminals, typeof terminals);
 
@@ -52,7 +52,7 @@ export default function List() {
                 {
                     terminals && terminals.map((terminal: any) => {
                         return (
-                            <TerminalButton key={terminal.name} name={terminal.stationName} address={terminal.address} image="/images/terminal-list/terminal-image-test.png"/>
+                            <TerminalButton key={terminal.uid} uid={terminal.uid} name={terminal.stationName} address={terminal.address} image="/images/terminal-list/terminal-image-test.png"/>
                         )
                     })
                 }
