@@ -2,15 +2,14 @@
 import Authenticated from "../../../layout";
 import Image from "next/image";
 
-import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
-  GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
+import { CreditCardIcon, GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
   QuestionMarkCircleIcon, InformationCircleIcon, ArrowRightOnRectangleIcon} from "@heroicons/react/20/solid";
 
 import AccountButton from "../../../components/AccountButton/AccountButton";
 import AccountButtonGroup from "../../../components/AccountButtonGroup/AccountButtonGroup";
 
 import terminalImage from "../../../public/images/profile/ma-borne-white.png";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, database } from "../../../utils/firebaseConfig";
 import { useEffect, useState } from "react";
