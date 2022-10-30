@@ -19,6 +19,7 @@ module.exports = {
       },
       backgroundImage: {
         'login-background': "url('/images/login/login-background.jpg')",
+        'my-terminal-background': "url('/images/my-terminal/login-background.png')",
       },
       colors: {
         'primary': '#00A0B4',

@@ -25,3 +25,29 @@
 #terminal-list .TerminalButton:last-of-type {
     @apply rounded-b-md;
 }
+
+.TerminalStep2 {
+    border-top: 2px solid #00A0B4;
+}    
+
+.TerminalStep2:before {
+    position: absolute;
+    left: 50%;
+    right: 0;
+    top: -2px;
+    border-top: 2px solid grey;
+    content: '';
+}
+
+.TerminalStep3 {
+    border-top: 2px solid #00A0B4;
+}    
+
+.TerminalStep3:before {
+    position: absolute;
+    left: 75%;
+    right: 0;
+    top: -2px;
+    border-top: 2px solid grey;
+    content: '';
+}
