@@ -86,8 +86,8 @@ export default function Map() {
   const [selectedTerminal, setSelectedTerminal] = useState<string>();
   const [terminals, setTerminals] = useState([
     {
-      lat: 45.61634620767123,
-      lng: -73.55157011723178,
+      lat: 45.42771818115786,
+      lng: -72.52708030990577,
       id: "123",
       state: "public" as State,
     },
