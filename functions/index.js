@@ -52,6 +52,15 @@ exports.importCircuitElectriqueStations = functions.https.onRequest(  (request, 
 });
 
 
+// add parks
+exports.importParks = functions.https.onRequest((request, response) => {
+  cors(request, response,  async () => {
+    admin.firestore().collection("parks").add(
+      request.body
+    );
+    response.status(200).send("OK");
+  });
+});
 
 
 
