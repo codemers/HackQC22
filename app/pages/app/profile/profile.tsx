@@ -2,6 +2,7 @@
 import Authenticated from "../../../layout";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
   GiftIcon, UserCircleIcon, TruckIcon, Cog6ToothIcon, 
@@ -76,10 +77,11 @@ export default function Profile() {
       <AccountButtonGroup>
         <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
-      <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-xs mb-4"
-      onClick={() => window.location.href='/app/terminal/me'} >
-        <Image src={terminalImage} className="inline h-6 w-6 mr-2" alt=""/> Passer en mode &quot;Ma Borne&quot;
-      </button>
+      <Link href="/app/terminal/step1"> 
+        <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-xs mb-4">
+          <Image src={terminalImage} className="inline h-6 w-6 mr-2" alt=""/> Passer en mode &quot;Ma Borne&quot;
+        </button>
+      </Link>
     </Authenticated>
   );
 }

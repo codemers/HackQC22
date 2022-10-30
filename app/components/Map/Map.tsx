@@ -5,11 +5,11 @@ type Props = {
     lat: number;
     lng: number;
   };
-  onBoundsChange: (bounds: any) => void;
+  onBoundsChange?: (bounds: any) => void;
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   zoom: number;
-  onZoomChange: (zoom: number) => void;
+  onZoomChange?: (zoom: number) => void;
 };
 
 export default function Map(props: Props) {
@@ -22,19 +22,23 @@ export default function Map(props: Props) {
         key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
       }}
       defaultCenter={center}
-      onZoomAnimationEnd={(_zoom) => onZoomChange(_zoom)}
+      onZoomAnimationEnd={(_zoom) => onZoomChange ? onZoomChange(_zoom) : () => {}}
       options={{ zoomControl: false, fullscreenControl: false }}
       zoom={zoom}
       yesIWantToUseGoogleMapApiInternals
       onClick={onClick}
       onChange={({ zoom, bounds }) => {
-        onZoomChange(zoom);
-        onBoundsChange([
-          bounds.nw.lng,
-          bounds.se.lat,
-          bounds.se.lng,
-          bounds.nw.lat,
-        ]);
+        if(onZoomChange) {
+          onZoomChange(zoom);
+        }
+       if(onBoundsChange) { 
+          onBoundsChange([
+            bounds.nw.lng,
+            bounds.se.lat,
+            bounds.se.lng,
+            bounds.nw.lat,
+          ]);
+        }
       }}
     >
       {children}

@@ -32,7 +32,7 @@
 
 .TerminalStep2:before {
     position: absolute;
-    left: 50%;
+    left: 25%;
     right: 0;
     top: -2px;
     border-top: 2px solid grey;
@@ -44,6 +44,19 @@
 }    
 
 .TerminalStep3:before {
+    position: absolute;
+    left: 50%;
+    right: 0;
+    top: -2px;
+    border-top: 2px solid grey;
+    content: '';
+}
+
+.TerminalStep4 {
+    border-top: 2px solid #00A0B4;
+}    
+
+.TerminalStep4:before {
     position: absolute;
     left: 75%;
     right: 0;
