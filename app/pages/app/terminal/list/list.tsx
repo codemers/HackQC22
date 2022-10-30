@@ -20,13 +20,8 @@ export default function List() {
                 </div>
             </div>
             <div id="terminal-list" className="mb-4">
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
-                <TerminalButton title="Tesla Wall Connector" subtitle="1 rue de l'Épée" icon=""/>
+                <TerminalButton id="1" title="Tesla Wall Connector" subtitle="1 rue de l'Épée" image="/images/terminal-list/terminal-image-test.png"/>
+                <TerminalButton id="2" title="Tesla Wall Connector" subtitle="1 rue de l'Épée" image="/images/terminal-list/terminal-image-test.png"/>
             </div>
         </Authenticated>
     )

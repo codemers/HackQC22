@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import Authenticated from "../../../layout";
-
 import Image from "next/image";
 
 import { InboxIcon, CreditCardIcon, ArrowPathIcon, ClockIcon, 
@@ -43,7 +42,7 @@ export default function Profile() {
   }, [user])
 
   return (
-    <Authenticated className="m-auto">
+    <Authenticated className="m-auto w-4/5">
       <p className="text-center m-4">
         <img className="inline w-14" src={profile?.photoUrl} alt=""/>
         {profile?.name}
@@ -64,7 +63,7 @@ export default function Profile() {
       <AccountButtonGroup>
         <AccountButton title="Mon compte" link="/app/my-account" icon={<UserCircleIcon className="w-4 h-4 inline-block" />}/>
         <AccountButton title="Mes véhicules" link="/app/my-vehicles" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
-        <AccountButton title="Mes bornes" link="/app/me" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
+        <AccountButton title="Mes bornes" link="/app/terminal/list" icon={<TruckIcon className="w-4 h-4 inline-block" />}/>
         <AccountButton title="Préférences" link="/app/settings" icon={<Cog6ToothIcon className="w-4 h-4 inline-block" />}/>
       </AccountButtonGroup>
 
@@ -77,7 +76,7 @@ export default function Profile() {
         <AccountButton title="Déconnection" link="/signout" icon={<ArrowRightOnRectangleIcon className="w-4 h-4 inline-block"/>}/>
       </AccountButtonGroup>
       <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-xs mb-4"
-      onClick={() => window.location.href='/app/terminal/me'} >
+      onClick={() => window.location.href='/app/terminal/step1'} >
         <Image src={terminalImage} className="inline h-6 w-6 mr-2" alt=""/> Passer en mode &quot;Ma Borne&quot;
       </button>
     </Authenticated>
