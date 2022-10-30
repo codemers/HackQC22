@@ -161,7 +161,9 @@ export default function Map() {
           </button>
         </div>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyDXkcad7PNb_VEEeiSJ9sL_7sPX9s40C94" }}
+          bootstrapURLKeys={{
+            key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
+          }}
           defaultCenter={{
             lat: geolocation.latitude,
             lng: geolocation.longitude,
