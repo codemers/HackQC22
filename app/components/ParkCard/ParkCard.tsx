@@ -3,23 +3,42 @@ import { useState } from "react";
 
 import XMarkIcon from "@heroicons/react/20/solid/XMarkIcon";
 import { Park } from "../../pages/app/map/map";
-import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowUpRightIcon,
+  CameraIcon,
+  ChatBubbleLeftIcon,
+  ChevronRightIcon,
+  CurrencyDollarIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/20/solid";
+
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowRightIcon,
+  QuestionMarkCircleIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
+import Map from "../Map/Map";
 
 type Props = {
   onClose: () => void;
   park: Park;
+  onExpand: (value: boolean) => void;
 };
 
 export default function ParkCard(props: Props) {
-  const { park } = props;
+  const { park, onExpand } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const terminals = park.terminals;
   const parkAvailable = terminals.some((t) => t.available);
 
+  function handleReservation(e: any) {
+    e.stopPropagation();
+    alert("Reservation not implemented yet");
+  }
   return (
-    <div>
+    <div className="">
       {/* {!isExpanded && ( */}
       <img
         src={"/images/map/image-terminal.png"}
@@ -30,9 +49,15 @@ export default function ParkCard(props: Props) {
       />
       {/* )} */}
       <div
-        className={cx("bg-white p-4 flex flex-col items-start border-b")}
+        className={cx("bg-white p-4 flex flex-col items-start border-b w-full")}
         style={{ height: isExpanded ? "calc(100vh - 192px)" : "128" }}
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => {
+          const value = !isExpanded;
+          if (value) {
+            setIsExpanded(value);
+            onExpand(value);
+          }
+        }}
       >
         {!isExpanded && (
           <div className="absolute top-24 right-5 mt-2">
@@ -113,10 +138,75 @@ export default function ParkCard(props: Props) {
         {isExpanded && (
           <>
             <p className={cx("mt-2")}>
-              <span className="text-black text-sm">{park.streetAddress}</span>
+              <span className="text-black text-sm">
+                {park.state === "public"
+                  ? park.streetAddress
+                  : "L'adresse sera affichée lorsque la réservation aura été effectuée."}
+              </span>
             </p>
 
-            {/* <button></button> */}
+            <div className="flex w-full">
+              <button
+                className="flex flex-row items-center rounded-md p-2 w-full"
+                style={{ backgroundColor: "rgba(149, 216, 250, 0.3)" }}
+                onClick={handleReservation}
+              >
+                <div>
+                  <CurrencyDollarIcon className="w-5 h-5 text-[#80c4e7]" />
+                </div>
+                <div className="w-full flex flex-col">
+                  <span className="text-sm text-[#80c4e7] ">Réserver</span>
+                  <span className="text-xs text-gray-600 ">1 crédit</span>
+                </div>
+              </button>
+              <button
+                className="flex flex-col items-center rounded-md p-2 ml-2"
+                style={{ backgroundColor: "rgba(149, 216, 250, 0.3)" }}
+              >
+                <StarIcon className="w-5 h-5 text-[#80c4e7]" />
+                <span className="text-xs text-gray-600 ">Favori</span>
+              </button>
+            </div>
+            <div className="mt-8 w-full border-b py-2">
+              <span className="text-gray-400">À props</span>
+              <div className="w-full h-32">
+                <Map zoom={14} center={{ lat: park.lat, lng: park.lng }} />
+              </div>
+              <span className="text-sm">{park.parkName}</span>
+            </div>
+
+            <div className="bg-white mt-8 w-full flex flex-col">
+              <button className="flex bg-blue-50 rounded-md p-2 justify-between items-center">
+                <div className="flex items-center">
+                  <QuestionMarkCircleIcon className="w-5 text-[#80c4e7]" />
+                  <span className="ml-2">Boîte à outils - FAQ</span>
+                </div>
+                <ChevronRightIcon className="w-5 text-gray-400" />
+              </button>
+              <button className="flex bg-blue-50 rounded-md p-2 justify-between items-center mt-2">
+                <div className="flex items-center">
+                  <ChatBubbleLeftIcon className="w-5 text-[#80c4e7]" />
+                  <span className="ml-2">Soumettre des commentaires</span>
+                </div>
+                <ChevronRightIcon className="w-5 text-gray-400" />
+              </button>
+              <button className="flex bg-blue-50 rounded-md p-2 justify-between items-center mt-2">
+                <div className="flex items-center">
+                  <ExclamationTriangleIcon className="w-5 text-[#80c4e7]" />
+                  <span className="ml-2">Signaler un problème</span>
+                </div>
+                <ChevronRightIcon className="w-5 text-gray-400" />
+              </button>
+              <button className="flex bg-blue-50 rounded-md p-2 justify-between items-center mt-2">
+                <div className="flex items-center">
+                  <CameraIcon className="w-5 text-[#80c4e7]" />
+                  <span className="ml-2">
+                    Soumettre une photo de présentation
+                  </span>
+                </div>
+                <ChevronRightIcon className="w-5 text-gray-400" />
+              </button>
+            </div>
           </>
         )}
       </div>

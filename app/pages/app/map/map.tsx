@@ -43,7 +43,7 @@ function LocationPin({ lng, lat }: { lng: number; lat: number }) {
 
 type State = "private" | "public";
 
-function TerminalPin({
+function ParkPin({
   id,
   lng,
   lat,
@@ -61,14 +61,13 @@ function TerminalPin({
   park?: Park;
 }) {
   return (
-    // @ts-ignore
     <button
       // @ts-ignore
       lat={lat}
       lng={lng}
       className={cx(
         "rounded-md flex items-center justify-between px-2 w-20 h-10 border-white border",
-        state === "private" ? "bg-pink-500" : "bg-[#8ABF55]"
+        state === "private" ? "bg-[#50b0C6]" : "bg-[#8ABF55]"
       )}
       onClick={() => onClick(id)}
     >
@@ -109,10 +108,36 @@ function TerminalPin({
     </button>
   );
 }
+function TerminalPin(props: {
+  id: string;
+  lng: number;
+  lat: number;
+  zoom: number;
+  onClick: (id: string) => void;
+  state: State;
+  park?: Park;
+}) {
+  if (props.park?.state === "private") {
+    return (
+      <div
+        className={cx(
+          "rounded-full h-48 w-48 flex items-center justify-center"
+        )}
+        style={{
+          backgroundColor:
+            props.zoom > 15 ? "rgba(80, 176, 198, 0.2)" : "transparent",
+        }}
+      >
+        <ParkPin {...props} />
+      </div>
+    );
+  }
+  return <ParkPin {...props} />;
+}
 
 export default function Map() {
   const geolocation = useGeolocation();
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(14);
   const [bounds, setBounds] = useState(null);
   const mapRef = useRef();
 
@@ -125,15 +150,15 @@ export default function Map() {
 
         parks.push({
           id: doc.id,
-          parkName: park.name,
+          parkName: park.parkName,
           lng: parseFloat(park.longitude),
           lat: parseFloat(park.latitude),
           state: park.type,
           // @ts-ignore
-          terminals: park.terminals.map((t) => ({
+          terminals: park.terminals?.map((t) => ({
             name: t.stationName,
-            available: true,
-            type: park.status === "available",
+            available: t.status === "available",
+            type: "Niveau 2",
           })),
           city: park.region,
           streetAddress: park.street,
@@ -141,6 +166,7 @@ export default function Map() {
       });
 
       setParks(parks);
+      setFilteredParks(parks);
     }
 
     fetchParks();
@@ -148,9 +174,19 @@ export default function Map() {
 
   const [selectedPark, setSelectedPark] = useState<string>();
   const [parks, setParks] = useState<Park[]>([]);
+  const [parkToShow, setParkToShow] = useState<"all" | "private">("all");
+  const [filteredParks, setFilteredParks] = useState<Park[]>([]);
+  const [cardIsExpanded, setCardIsExpand] = useState(false);
+  useEffect(() => {
+    if (parkToShow === "all") {
+      setFilteredParks(parks);
+    } else {
+      setFilteredParks(parks.filter((p) => p.state === parkToShow));
+    }
+  }, [parkToShow]);
 
   const { clusters, supercluster } = useSupercluster({
-    points: parks.map((t) => {
+    points: filteredParks.map((t) => {
       return {
         type: t.state,
         id: t.id,
@@ -159,7 +195,12 @@ export default function Map() {
         },
         geometry: {
           type: "Point",
-          coordinates: [t.lng, t.lat],
+          coordinates: (() => {
+            if (t.state === "private") {
+              return [t.lng, t.lat];
+            }
+            return [t.lng, t.lat];
+          })(),
         },
       };
     }),
@@ -168,6 +209,9 @@ export default function Map() {
     options: { radius: 275, maxZoom: 35 },
   });
 
+  function handleExpand(value: boolean) {
+    setCardIsExpand(value);
+  }
   if (!geolocation.longitude || !geolocation.latitude) {
     return null;
   }
@@ -200,7 +244,16 @@ export default function Map() {
           <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b rounded-t-md">
             <InformationCircleIcon className="w-5 h-5 text-gray-400" />
           </button>
-          <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b">
+          <button
+            className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b"
+            onClick={() => {
+              if (parkToShow === "all") {
+                setParkToShow("private");
+              } else {
+                setParkToShow("all");
+              }
+            }}
+          >
             <AdjustmentsHorizontalIcon className="w-5 h-5 text-gray-400" />
           </button>
           <button className="bg-white flex items-center justify-center px-4 border-gray-100 w-13 h-13 py-[11px] border-b">
@@ -217,7 +270,11 @@ export default function Map() {
             lng: geolocation.longitude,
           }}
           onBoundsChange={setBounds}
-          onClick={() => (selectedPark ? setSelectedPark(undefined) : () => {})}
+          onClick={() => {
+            selectedPark && !cardIsExpanded
+              ? setSelectedPark(undefined)
+              : () => {};
+          }}
           zoom={zoom}
           onZoomChange={setZoom}
         >
@@ -264,6 +321,7 @@ export default function Map() {
             <ParkCard
               onClose={() => setSelectedPark(undefined)}
               park={parks.find((p) => p.id === selectedPark) as Park}
+              onExpand={handleExpand}
             />
           </div>
         )}
