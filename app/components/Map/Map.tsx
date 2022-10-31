@@ -6,7 +6,7 @@ type Props = {
     lng: number;
   };
   onBoundsChange?: (bounds: any) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onClick?: () => void;
   zoom: number;
   onZoomChange?: (zoom: number) => void;
@@ -22,16 +22,18 @@ export default function Map(props: Props) {
         key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
       }}
       defaultCenter={center}
-      onZoomAnimationEnd={(_zoom) => onZoomChange ? onZoomChange(_zoom) : () => {}}
+      onZoomAnimationEnd={(_zoom) =>
+        onZoomChange ? onZoomChange(_zoom) : () => {}
+      }
       options={{ zoomControl: false, fullscreenControl: false }}
       zoom={zoom}
       yesIWantToUseGoogleMapApiInternals
       onClick={onClick}
       onChange={({ zoom, bounds }) => {
-        if(onZoomChange) {
+        if (onZoomChange) {
           onZoomChange(zoom);
         }
-       if(onBoundsChange) { 
+        if (onBoundsChange) {
           onBoundsChange([
             bounds.nw.lng,
             bounds.se.lat,
@@ -41,7 +43,7 @@ export default function Map(props: Props) {
         }
       }}
     >
-      {children}
+      {children && children}
     </GoogleMapReact>
   );
 }
