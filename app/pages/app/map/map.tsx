@@ -187,7 +187,6 @@ export default function Map() {
     },
     {
       onError: (e) => console.log(e),
-      refetchInterval: 10000,
     }
   );
 
@@ -195,7 +194,6 @@ export default function Map() {
     ["getReservations"],
     async () => {
       const auth = getAuth();
-      console.log(auth.currentUser?.uid);
       const transactionRef = collection(database, "transactions");
       const q = query(
         transactionRef,
@@ -214,7 +212,6 @@ export default function Map() {
     },
     {
       onError: (e) => console.log(e),
-      refetchInterval: 10000,
     }
   );
 
