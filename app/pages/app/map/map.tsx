@@ -187,6 +187,7 @@ export default function Map() {
     },
     {
       onError: (e) => console.log(e),
+      refetchInterval: 10000,
     }
   );
 
@@ -213,6 +214,7 @@ export default function Map() {
     },
     {
       onError: (e) => console.log(e),
+      refetchInterval: 10000,
     }
   );
 
