@@ -3,6 +3,7 @@ import GoogleMapReact from "google-map-react";
 import useGeolocation from "react-hook-geolocation";
 import useSupercluster from "use-supercluster";
 import { useEffect, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
 
 import QueueListIcon from "@heroicons/react/20/solid/QueueListIcon";
 import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
@@ -14,7 +15,21 @@ import ParkCard from "../../../components/ParkCard/ParkCard";
 
 import MapCmp from "../../../components/Map/Map";
 import { database } from "../../../utils/firebaseConfig";
-import { collection, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  connectFirestoreEmulator,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
+export type Reservation = {
+  userId: string;
+  parkId: string;
+  terminalId: string;
+  id: string;
+};
 
 export type Park = {
   id: string;
@@ -140,9 +155,11 @@ export default function Map() {
   const [zoom, setZoom] = useState(14);
   const [bounds, setBounds] = useState(null);
   const mapRef = useRef();
+  const [filteredParks, setFilteredParks] = useState<Park[]>([]);
 
-  useEffect(() => {
-    async function fetchParks() {
+  const getParks = useQuery(
+    ["getParks"],
+    async () => {
       const querySnapshot = await getDocs(query(collection(database, "parks")));
       const parks: Park[] = [];
       querySnapshot.forEach((doc) => {
@@ -165,17 +182,43 @@ export default function Map() {
         });
       });
 
-      setParks(parks);
       setFilteredParks(parks);
+      return { parks, filteredParks: parks };
+    },
+    {
+      onError: (e) => console.log(e),
     }
+  );
 
-    fetchParks();
-  }, []);
+  const getReservations = useQuery(
+    ["getReservations"],
+    async () => {
+      const auth = getAuth();
+      console.log(auth.currentUser?.uid);
+      const transactionRef = collection(database, "transactions");
+      const q = query(
+        transactionRef,
+        where("userId", "==", auth.currentUser?.uid)
+      );
 
+      const querySnapshot = await getDocs(q);
+      const reservations: Reservation[] = [];
+      querySnapshot.forEach((doc) => {
+        const transaction = doc.data();
+
+        // @ts-ignore
+        reservations.push({ ...transaction, id: doc.id });
+      });
+      return reservations;
+    },
+    {
+      onError: (e) => console.log(e),
+    }
+  );
+
+  const parks = getParks.data?.parks || [];
   const [selectedPark, setSelectedPark] = useState<string>();
-  const [parks, setParks] = useState<Park[]>([]);
   const [parkToShow, setParkToShow] = useState<"all" | "private">("all");
-  const [filteredParks, setFilteredParks] = useState<Park[]>([]);
   const [cardIsExpanded, setCardIsExpand] = useState(false);
   useEffect(() => {
     if (parkToShow === "all") {
@@ -322,6 +365,7 @@ export default function Map() {
               onClose={() => setSelectedPark(undefined)}
               park={parks.find((p) => p.id === selectedPark) as Park}
               onExpand={handleExpand}
+              reservations={getReservations.data || []}
             />
           </div>
         )}

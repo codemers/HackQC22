@@ -24,6 +24,7 @@
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
     "react-hook-geolocation": "^1.1.0",
+    "react-query": "^3.39.2",
     "use-supercluster": "^0.4.0"
   },
   "devDependencies": {
