@@ -22,7 +22,16 @@ import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, database } from "../../../utils/firebaseConfig";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { useQuery } from "react-query";
+import { Reservation } from "../map/map";
 
 export default function Profile() {
   const auth = getAuth(app);
@@ -46,6 +55,31 @@ export default function Profile() {
 
     fetchData().catch(console.error);
   }, [user]);
+
+  const getReservations = useQuery(
+    ["getReservations"],
+    async () => {
+      const auth = getAuth();
+      const transactionRef = collection(database, "transactions");
+      const q = query(
+        transactionRef,
+        where("userId", "==", auth.currentUser?.uid)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const reservations: Reservation[] = [];
+      querySnapshot.forEach((doc) => {
+        const transaction = doc.data();
+
+        // @ts-ignore
+        reservations.push({ ...transaction, id: doc.id });
+      });
+      return reservations;
+    },
+    {
+      onError: (e) => console.log(e),
+    }
+  );
 
   return (
     <Authenticated className="m-auto w-4/5">
@@ -90,6 +124,11 @@ export default function Profile() {
         />
         <AccountButton
           title="Mes véhicules"
+          link="/app/my-vehicles"
+          icon={<TruckIcon className="w-4 h-4 inline-block" />}
+        />
+        <AccountButton
+          title={`Mes réservations - ${(getReservations.data || []).length}`}
           link="/app/my-vehicles"
           icon={<TruckIcon className="w-4 h-4 inline-block" />}
         />

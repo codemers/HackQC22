@@ -1,8 +1,9 @@
 import cx from "classix";
 import { useState } from "react";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 import XMarkIcon from "@heroicons/react/20/solid/XMarkIcon";
-import { Park } from "../../pages/app/map/map";
+import { Park, Reservation } from "../../pages/app/map/map";
 import {
   ArrowUpRightIcon,
   CameraIcon,
@@ -19,24 +20,53 @@ import {
   StarIcon,
 } from "@heroicons/react/24/outline";
 import Map from "../Map/Map";
+import { useQueryClient } from "react-query";
 
 type Props = {
   onClose: () => void;
   park: Park;
   onExpand: (value: boolean) => void;
+  reservations: Reservation[];
 };
 
 export default function ParkCard(props: Props) {
   const { park, onExpand } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const queryClient = useQueryClient();
   const terminals = park.terminals;
   const parkAvailable = terminals.some((t) => t.available);
 
+  const terminalReservedByMe = props.reservations.find(
+    ({ parkId, terminalId }) => parkId === park.id
+  );
+
   function handleReservation(e: any) {
-    e.stopPropagation();
-    alert("Reservation not implemented yet");
+    const functions = getFunctions();
+    if (terminalReservedByMe) {
+      const cancelReservation = httpsCallable(functions, "cancelReservation");
+
+      cancelReservation({ id: terminalReservedByMe.id, parkId: park.id }).then(
+        (result) => {
+          queryClient.invalidateQueries("getParks");
+          queryClient.invalidateQueries("getReservations");
+        }
+      );
+      return;
+    }
+    // alert("Reservation not implemented yet");
+
+    const addReservation = httpsCallable(functions, "addReservation");
+
+    addReservation({
+      parkId: park.id,
+      terminalId: terminals[0].name,
+    }).then(() => {
+      queryClient.invalidateQueries("getParks");
+      queryClient.invalidateQueries("getReservations");
+    });
   }
+
   return (
     <div className="">
       {/* {!isExpanded && ( */}
@@ -155,7 +185,9 @@ export default function ParkCard(props: Props) {
                   <CurrencyDollarIcon className="w-5 h-5 text-[#80c4e7]" />
                 </div>
                 <div className="w-full flex flex-col">
-                  <span className="text-sm text-[#80c4e7] ">Réserver</span>
+                  <span className="text-sm text-[#80c4e7] ">
+                    {!!terminalReservedByMe ? "Annuler" : "Réserver"}
+                  </span>
                   <span className="text-xs text-gray-600 ">1 crédit</span>
                 </div>
               </button>
