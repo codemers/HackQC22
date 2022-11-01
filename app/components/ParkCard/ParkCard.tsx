@@ -169,7 +169,7 @@ export default function ParkCard(props: Props) {
           <>
             <p className={cx("mt-2")}>
               <span className="text-black text-sm">
-                {park.state === "public"
+                {park.state === "public" || terminalReservedByMe
                   ? park.streetAddress
                   : "L'adresse sera affichée lorsque la réservation aura été effectuée."}
               </span>

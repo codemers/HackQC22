@@ -131,6 +131,7 @@ function TerminalPin(props: {
   onClick: (id: string) => void;
   state: State;
   park?: Park;
+  reservedByMe?: Reservation;
 }) {
   if (props.park?.state === "private") {
     return (
@@ -140,7 +141,9 @@ function TerminalPin(props: {
         )}
         style={{
           backgroundColor:
-            props.zoom > 15 ? "rgba(80, 176, 198, 0.2)" : "transparent",
+            props.zoom > 15 && !props.reservedByMe
+              ? "rgba(80, 176, 198, 0.2)"
+              : "transparent",
         }}
       >
         <ParkPin {...props} />
@@ -343,6 +346,7 @@ export default function Map() {
               );
             }
 
+            const park = parks.find((p) => p.id === cluster.id);
             return (
               <TerminalPin
                 key={cluster.id}
@@ -352,7 +356,10 @@ export default function Map() {
                 zoom={zoom}
                 onClick={setSelectedPark}
                 state={cluster.type}
-                park={parks.find((p) => p.id === cluster.id)}
+                park={park}
+                reservedByMe={(getReservations.data || []).find(
+                  ({ parkId, terminalId }) => parkId === park?.id
+                )}
               />
             );
           })}

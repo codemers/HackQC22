@@ -110,7 +110,6 @@ exports.makeParksUnavailableInCity = functions.https.onRequest(
 
 exports.addReservation = functions.https.onCall(async (data, context) => {
   const userId = context.auth.uid;
-  console.log(data);
 
   await admin
     .firestore()
@@ -125,10 +124,8 @@ exports.addReservation = functions.https.onCall(async (data, context) => {
     .collection("parks")
     .doc(data.parkId)
     .get();
-  console.log(park);
 
   const terminals = park.data().terminals;
-  console.log(terminals);
 
   let updatedTerminals = [];
 
@@ -149,7 +146,6 @@ exports.addReservation = functions.https.onCall(async (data, context) => {
 
 exports.cancelReservation = functions.https.onCall(async (data, context) => {
   const userId = context.auth.uid;
-  console.log(data);
 
   await admin.firestore().collection("transactions").doc(data.id).delete();
 
