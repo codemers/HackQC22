@@ -4,21 +4,30 @@ const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 admin.initializeApp();
 
-exports.initializeUserOnCreate = functions.auth.user().onCreate(async (firebaseUser) => {
-  const userId = firebaseUser.providerData[0].uid
+exports.initializeUserOnCreate = functions.auth
+  .user()
+  .onCreate(async (firebaseUser) => {
+    const userId = firebaseUser.providerData[0].uid;
 
-  return admin.firestore().collection("users").doc(firebaseUser.uid).set({
-    email: firebaseUser.email,
-    name: firebaseUser.displayName,
-    photoUrl: firebaseUser.photoURL,
-    emailVerified: firebaseUser.emailVerified,
-    phoneNumber: firebaseUser.phoneNumber,
-    providerId: firebaseUser.providerData[0].providerId,
-    userId: userId || "",
-    credits: 10,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-  }, { ignoreUndefinedProperties: true } );
-});
+    return admin
+      .firestore()
+      .collection("users")
+      .doc(firebaseUser.uid)
+      .set(
+        {
+          email: firebaseUser.email,
+          name: firebaseUser.displayName,
+          photoUrl: firebaseUser.photoURL,
+          emailVerified: firebaseUser.emailVerified,
+          phoneNumber: firebaseUser.phoneNumber,
+          providerId: firebaseUser.providerData[0].providerId,
+          userId: userId || "",
+          credits: 10,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        { ignoreUndefinedProperties: true }
+      );
+  });
 
 exports.initializeUserOnDelete = functions.auth
   .user()
@@ -133,6 +142,12 @@ exports.addReservation = functions.https.onCall(async (data, context) => {
     terminals: updatedTerminals,
   });
 
+  const increment = admin.firestore.FieldValue.increment(-1);
+
+  await admin.firestore().collection("users").doc(userId).update({
+    credits: increment,
+  });
+
   return;
 });
 
@@ -162,6 +177,11 @@ exports.cancelReservation = functions.https.onCall(async (data, context) => {
     terminals: updatedTerminals,
   });
 
+  const increment = admin.firestore.FieldValue.increment(1);
+
+  await admin.firestore().collection("users").doc(userId).update({
+    credits: increment,
+  });
   // Send push notification to owner
   // Remove user credit
   return;
