@@ -83,10 +83,11 @@ export default function Profile() {
 
   return (
     <Authenticated className="m-auto w-4/5">
-      <p className="text-center m-4">
+      <p className="text-center m-4 ">
         <img className="inline w-14" src={profile?.photoUrl} alt="" />
         {profile?.name}
       </p>
+      <p className="text-center m-4 ">Crédits: {profile?.credits}</p>
 
       <AccountButtonGroup>
         <AccountButton
