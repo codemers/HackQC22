@@ -64,8 +64,20 @@ exports.importCircuitElectriqueStations = functions.https.onRequest(
   }
 );
 
-// add parks
+// add array of parks
 exports.importParks = functions.https.onRequest((request, response) => {
+  cors(request, response, async () => {
+    const parks = request.body.parks;
+    console.log(parks);
+    parks.forEach((park) => {
+      admin.firestore().collection("parks").add(park);
+    });
+    response.status(200).send("OK");
+  });
+});
+
+// add park
+exports.importPark = functions.https.onRequest((request, response) => {
   cors(request, response, async () => {
     admin.firestore().collection("parks").add(request.body);
     response.status(200).send("OK");
