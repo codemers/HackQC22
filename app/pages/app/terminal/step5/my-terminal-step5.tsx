@@ -53,10 +53,7 @@ export default function MyTerminalStep5() {
 
   return (
     <div className="h-screen bg-cover bg-center overflow-hidden">
-      <img
-        src="/images/top-linear-gradient.png"
-        className="w-full absolute -top-16 "
-      />
+      <img src="/images/top-linear-gradient.png" className="w-full absolute" />
       <div className="min-h-3/8 max-h-3/8 absolute w-full">
         <div className="flex w-full justify-between p-6">
           <Link href="/app/profile">
@@ -71,7 +68,7 @@ export default function MyTerminalStep5() {
           </div>
         </div>
         <div className="pl-6">
-          <h1 className="text-4xl mb-10 text-white">
+          <h1 className="text-3xl mb-10 text-white">
             Quelle est la disponibilité de
             <br /> votre borne ?
           </h1>
@@ -130,7 +127,7 @@ export default function MyTerminalStep5() {
           Paramètres avancés (par jour)
         </p>
       </div>
-      <div className="min-h-1/8 max-h-1/8 w-screen bg-white border solid p-6 absolute bottom-0 TerminalStep4 mb-4 flex w-full items-center justify-between">
+      <div className="min-h-1/8 max-h-1/8 w-screen bg-white border solid p-6 absolute bottom-0 TerminalStep4 flex w-full items-center justify-between">
         <div className="flex items-center">
           <ChevronLeftIcon className="w-5 text-[#133B62]" />
           <div>

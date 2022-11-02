@@ -17,7 +17,7 @@ export default function TerminalStep1() {
       </div>
 
       <div className="h-2/6 p-6 absolute bottom-0 z-50 w-full">
-        <h1 className="text-4xl mb-6 text-white">
+        <h1 className="text-3xl mb-6 text-white">
           Louez votre borne de <br />
           recharge !
         </h1>
@@ -32,7 +32,7 @@ export default function TerminalStep1() {
       </div>
       <img
         src="/images/bottom-linear-gradient.png"
-        className="w-full absolute -bottom-12"
+        className="w-full absolute"
       />
     </div>
   );

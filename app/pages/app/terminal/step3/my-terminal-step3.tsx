@@ -37,7 +37,7 @@ export default function MyTerminalStep3() {
     <div className="h-screen bg-my-terminal-background bg-cover bg-center overflow-hidden">
       <img
         src="/images/bottom-linear-gradient.png"
-        className="w-full absolute -top-32 rotate-180 z-50"
+        className="w-full absolute rotate-180 z-50"
       />
       <div className="min-h-3/8 max-h-3/8 absolute top-0 z-50 w-full">
         <div className="flex w-full justify-between p-6">
@@ -53,7 +53,7 @@ export default function MyTerminalStep3() {
           </div>
         </div>
         <div className="pl-6">
-          <h1 className="text-4xl mb-4 text-white">
+          <h1 className="text-3xl mb-4 text-white">
             Où se trouve votre borne de <br />
             recharge ?
           </h1>
@@ -91,7 +91,7 @@ export default function MyTerminalStep3() {
         </Map>
       </div>
 
-      <div className="min-h-1/8 max-h-1/8 bg-white border solid p-6 absolute bottom-0 TerminalStep3 mb-4 flex w-full items-center justify-between">
+      <div className="min-h-1/8 max-h-1/8 bg-white border solid p-6 absolute bottom-0 TerminalStep3 flex w-full items-center justify-between">
         <div className="flex items-center">
           <ChevronLeftIcon className="w-5 text-[#133B62]" />
           <div>
