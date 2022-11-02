@@ -40,6 +40,7 @@ export type Park = {
   terminals: { name: string; available: boolean; type: string }[];
   city: string;
   streetAddress: string;
+  visible: boolean;
 };
 
 function LocationPin({ lng, lat }: { lng: number; lat: number }) {
@@ -182,6 +183,7 @@ export default function Map() {
           })),
           city: park.region,
           streetAddress: park.street,
+          visible: park.visible,
         });
       });
 
@@ -231,24 +233,26 @@ export default function Map() {
   }, [parkToShow]);
 
   const { clusters, supercluster } = useSupercluster({
-    points: filteredParks.map((t) => {
-      return {
-        type: t.state,
-        id: t.id,
-        properties: {
-          cluster: false,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: (() => {
-            if (t.state === "private") {
+    points: filteredParks
+      .filter(({ visible }) => visible)
+      .map((t) => {
+        return {
+          type: t.state,
+          id: t.id,
+          properties: {
+            cluster: false,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: (() => {
+              if (t.state === "private") {
+                return [t.lng, t.lat];
+              }
               return [t.lng, t.lat];
-            }
-            return [t.lng, t.lat];
-          })(),
-        },
-      };
-    }),
+            })(),
+          },
+        };
+      }),
     bounds,
     zoom,
     options: { radius: 275, maxZoom: 35 },
