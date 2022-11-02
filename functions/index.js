@@ -69,9 +69,7 @@ exports.importParks = functions.https.onRequest((request, response) => {
   cors(request, response, async () => {
     const parks = request.body.parks;
     console.log(parks);
-    parks.forEach((park) => {
-      admin.firestore().collection("parks").add(park);
-    });
+    await Promise.all(parks.map(async (park) => admin.firestore().collection("parks").add(park)));
     response.status(200).send("OK");
   });
 });
@@ -84,12 +82,12 @@ exports.importPark = functions.https.onRequest((request, response) => {
   });
 });
 
-// make all terminals of all parks unavailable in a given city
+// change status of all terminals in a given city
 exports.makeParksUnavailableInCity = functions.https.onRequest(
   (request, response) => {
     cors(request, response, async () => {
       const city = request.body.city;
-      console.log(city);
+      const _status = request.body.status;
       const parks = await admin
         .firestore()
         .collection("parks")
@@ -106,7 +104,7 @@ exports.makeParksUnavailableInCity = functions.https.onRequest(
         terminals.forEach(async (terminal) => {
           updatedTerminals.push({
             ...terminal,
-            status: "unavailable",
+            status: _status,
           });
         });
         console.log(updatedTerminals);
