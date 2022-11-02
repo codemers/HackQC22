@@ -65,20 +65,30 @@ exports.importCircuitElectriqueStations = functions.https.onRequest(
   }
 );
 
-// add parks
+// add array of parks
 exports.importParks = functions.https.onRequest((request, response) => {
+  cors(request, response, async () => {
+    const parks = request.body.parks;
+    console.log(parks);
+    await Promise.all(parks.map(async (park) => admin.firestore().collection("parks").add(park)));
+    response.status(200).send("OK");
+  });
+});
+
+// add park
+exports.importPark = functions.https.onRequest((request, response) => {
   cors(request, response, async () => {
     admin.firestore().collection("parks").add(request.body);
     response.status(200).send("OK");
   });
 });
 
-// make all terminals of all parks unavailable in a given city
+// change status of all terminals in a given city
 exports.makeParksUnavailableInCity = functions.https.onRequest(
   (request, response) => {
     cors(request, response, async () => {
       const city = request.body.city;
-      console.log(city);
+      const _status = request.body.status;
       const parks = await admin
         .firestore()
         .collection("parks")
@@ -95,7 +105,7 @@ exports.makeParksUnavailableInCity = functions.https.onRequest(
         terminals.forEach(async (terminal) => {
           updatedTerminals.push({
             ...terminal,
-            status: "unavailable",
+            status: _status,
           });
         });
         console.log(updatedTerminals);

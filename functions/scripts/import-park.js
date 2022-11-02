@@ -72,10 +72,9 @@ for (var key in parksJson) {
   parksList.push(parksJson[key]);
 }
 
-// send parksList to firebase
-axios.post("http://127.0.0.1:5001/hackqc2022-8347e/us-central1/importParks", {
-  parks: parksList,
-})
+// send park to firebase
+park = parksList[0];
+axios.post("https://us-central1-hackqc2022-8347e.cloudfunctions.net/importPark", park)
   .then((response) => {
     console.log(response);
   })
