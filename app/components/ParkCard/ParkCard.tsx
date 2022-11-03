@@ -79,7 +79,9 @@ export default function ParkCard(props: Props) {
       />
       {/* )} */}
       <div
-        className={cx("bg-white p-4 flex flex-col items-start border-b w-full")}
+        className={cx(
+          "bg-white p-4 flex flex-col items-start border-b w-full overflow-scroll"
+        )}
         style={{ height: isExpanded ? "calc(100vh - 192px)" : "128" }}
         onClick={() => {
           const value = !isExpanded;

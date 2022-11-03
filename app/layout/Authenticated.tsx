@@ -6,9 +6,19 @@ import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { app } from "../utils/firebaseConfig";
+import { app, database } from "../utils/firebaseConfig";
 import cx from "classix";
 import { XCircleIcon } from "@heroicons/react/20/solid";
+import { useQuery, useQueryClient } from "react-query";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 
 type Props = {
   children: React.ReactNode;
@@ -21,10 +31,27 @@ export default function Authenticated({
   children,
   adminView,
   className,
-  showNotification = false,
 }: Props) {
   const auth = getAuth(app);
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const notification = useQuery(
+    ["getNotifications"],
+    async () => {
+      const notifRef = collection(database, "notifications");
+      const q = query(notifRef, where("visible", "==", true));
+
+      const querySnapshot = await getDocs(q);
+
+      return querySnapshot.docs.length > 0;
+    },
+    {
+      onError: (e) => console.log(e),
+      refetchInterval: 5000,
+    }
+  );
+
+  const showNotification = notification.data || false;
 
   const [user, loading, error] = useAuthState(auth);
   const [hideNotification, setHideNotification] = useState(false);
@@ -45,9 +72,54 @@ export default function Authenticated({
     return null;
   }
 
-  function handleEnableMyPark() {
-    alert("Enable Park");
-    // set visibile of my park to true
+  async function handleRemoveNotification() {
+    const notifRef = collection(database, "notifications");
+    const q = query(notifRef, where("visible", "==", true));
+
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.docs[0]) {
+      return setDoc(
+        querySnapshot.docs[0].ref,
+        {
+          visible: false,
+        },
+        { merge: true }
+      );
+    }
+  }
+
+  async function handleEnableMyPark() {
+    if (!user) return;
+
+    const usersRef = doc(database, "users", user.uid);
+    const docSnap = await getDoc(usersRef);
+
+    if (docSnap.exists()) {
+      const parkRef = collection(database, "parks");
+      const q = query(parkRef, where("type", "==", "private"));
+
+      const querySnapshot = await getDocs(q);
+      const privateParkIds: string[] = [];
+      querySnapshot.forEach((doc) => {
+        privateParkIds.push(doc.id);
+      });
+
+      await Promise.all(
+        privateParkIds.map((parkId) => {
+          setDoc(
+            doc(database, "parks", parkId),
+            {
+              visible: true,
+            },
+            { merge: true }
+          );
+        })
+      );
+
+      await handleRemoveNotification();
+      notification.refetch();
+      queryClient.invalidateQueries("getParks");
+    }
   }
 
   return (

@@ -25,14 +25,14 @@ function init() {
   const database = getFirestore(app);
   const functions = getFunctions(app);
 
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "development") {
-    const auth = getAuth();
-    connectAuthEmulator(auth, "http://localhost:9099", {
-      disableWarnings: true,
-    });
-    connectFirestoreEmulator(database, "localhost", 8080);
-    connectFunctionsEmulator(functions, "localhost", 5001);
-  }
+  // if (process.env.NEXT_PUBLIC_VERCEL_ENV === "development") {
+  //   const auth = getAuth();
+  //   connectAuthEmulator(auth, "http://localhost:9099", {
+  //     disableWarnings: true,
+  //   });
+  //   connectFirestoreEmulator(database, "localhost", 8080);
+  //   connectFunctionsEmulator(functions, "localhost", 5001);
+  // }
 
   return { app, database };
 }
