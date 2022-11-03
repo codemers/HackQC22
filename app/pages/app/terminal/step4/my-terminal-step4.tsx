@@ -16,6 +16,8 @@ export default function MyTerminalStep4() {
 
   function handleSelectedAddress(value: any, key: string) {
     setSelectedAddress({ ...selectedAddress, [key]: value });
+
+    localStorage.setItem("terminal_step4_address", JSON.stringify(selectedAddress));
   }
 
   return (
