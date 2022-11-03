@@ -84,7 +84,7 @@ exports.importPark = functions.https.onRequest((request, response) => {
 });
 
 // change status of all terminals in a given city
-exports.makeParksUnavailableInCity = functions.https.onRequest(
+exports.updateTerminalsStatusInGivenCity = functions.https.onRequest(
   (request, response) => {
     cors(request, response, async () => {
       const city = request.body.city;
