@@ -152,9 +152,14 @@ exports.addReservation = functions.https.onCall(async (data, context) => {
     terminals: updatedTerminals,
   });
 
-  const increment = admin.firestore.FieldValue.increment(-1);
+  const substract = admin.firestore.FieldValue.increment(-1);
+  const increment = admin.firestore.FieldValue.increment(1);
 
   await admin.firestore().collection("users").doc(userId).update({
+    credits: substract,
+  });
+
+  await admin.firestore().collection("users").doc(park.data().owner).update({
     credits: increment,
   });
 
@@ -188,10 +193,16 @@ exports.cancelReservation = functions.https.onCall(async (data, context) => {
   });
 
   const increment = admin.firestore.FieldValue.increment(1);
+  const substract = admin.firestore.FieldValue.increment(-1);
 
   await admin.firestore().collection("users").doc(userId).update({
     credits: increment,
   });
+
+  await admin.firestore().collection("users").doc(park.data().owner).update({
+    credits: substract,
+  });
+
   // Send push notification to owner
   // Remove user credit
   return;

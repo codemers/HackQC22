@@ -79,6 +79,7 @@ export default function MyTerminalStep5() {
       region: "Québec",
       street: terminal_step4_address.address,
       zip: terminal_step4_address.zip,
+      owner: user.uid,
       visible: false,
       parkName: "Parc de " + user.displayName,
       createdAt: new Date().toISOString(),
