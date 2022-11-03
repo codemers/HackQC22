@@ -164,7 +164,10 @@ export default function Map() {
   const getParks = useQuery(
     ["getParks"],
     async () => {
-      const querySnapshot = await getDocs(query(collection(database, "parks")));
+      const transactionRef = collection(database, "transactions");
+      const q = query(transactionRef, where("City", "==", "Québec"));
+
+      const querySnapshot = await getDocs(q);
       const parks: Park[] = [];
       querySnapshot.forEach((doc) => {
         const park = doc.data();
