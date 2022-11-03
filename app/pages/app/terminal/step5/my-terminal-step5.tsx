@@ -3,12 +3,11 @@ import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import {
   XCircleIcon,
-  PlusIcon,
   ArrowPathIcon,
   ChevronLeftIcon,
 } from "@heroicons/react/20/solid";
 
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { app, database } from "../../../../utils/firebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -33,6 +32,7 @@ export default function MyTerminalStep5() {
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
   function handleSelectedTime(time: string, key: string) {
     setSelectedTime({ ...selectedTime, [key]: time });
+    localStorage.setItem("terminal_step5_time", JSON.stringify(selectedTime));
   }
 
   async function handleAddTerminal() {
@@ -40,17 +40,55 @@ export default function MyTerminalStep5() {
 
     setIsLoading(true);
     const usersRef = doc(database, "users", user.uid);
+
+    var terminal_step2_teminal_name = localStorage.getItem("terminal_step2_teminal_name");
+    var terminal_step2_terminal_type = localStorage.getItem("terminal_step2_teminal_type");
+    var terminal_step4_address = JSON.parse(localStorage.getItem("terminal_step4_address") || "{}");
+    var terminal_step5_time = JSON.parse(localStorage.getItem("terminal_step5_time") || "{}");
+
     const docSnap = await setDoc(
       usersRef,
       {
         terminals: [
           {
-            name: "Ma borne 3",
+            name: terminal_step2_teminal_name,
+            type: terminal_step2_terminal_type,
+            address: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
+            instruction: terminal_step4_address.instruction,
+            latitude: "-71.2205628",
+            longitude: "46.807973",
+            weekStart: terminal_step5_time.weekStart,
+            weekEnd: terminal_step5_time.weekEnd,
+            weekEndStart: terminal_step5_time.weekEndStart,
+            weekEndEnd: terminal_step5_time.weekEndEnd,
+            visible: false,
           },
         ],
       },
       { merge: true }
     );
+
+    // Adding terminal to parks
+    const parksSnap = await addDoc(collection(database, "parks"), {
+      adresse: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
+      latitude: "-71.2205628",
+      longitude: "46.807973",
+      type: "private",
+      city: terminal_step4_address.city,
+      region: "Québec",
+      street: terminal_step4_address.address,
+      zip: terminal_step4_address.zip,
+      visible: false,
+      parkName: "Parc de " + user.displayName,
+      terminals: [
+        {
+          chargeLevel: "Niveau 1",
+          stationName: "Borne " + terminal_step2_teminal_name + " de " + user.displayName,
+          status: "available",
+          type: "private",
+        }
+      ]
+    });
 
     setIsLoading(false);
     router.push("/app/terminal/list");

@@ -52,7 +52,7 @@ export default function List() {
                 {
                     terminals && terminals.map((terminal: any) => {
                         return (
-                            <TerminalButton key={terminal.uid} uid={terminal.uid} name={terminal.stationName} address={terminal.address} image="/images/terminal-list/terminal-image-test.png"/>
+                            <TerminalButton key={terminal.uid} uid={terminal.uid} name={terminal.name} address={terminal.address} image="/images/terminal-list/terminal-image-test.png"/>
                         )
                     })
                 }
