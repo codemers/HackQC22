@@ -182,7 +182,7 @@ export default function Map() {
             type: t.chargeLevel,
           })),
           city: park.city,
-          streetAddress: park.street,
+          streetAddress: park.addresse,
           visible: park.visible,
         });
       });
