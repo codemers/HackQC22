@@ -155,7 +155,7 @@ function TerminalPin(props: {
 }
 
 export default function Map() {
-  const geolocation = useGeolocation();
+  // const geolocation = useGeolocation();
   const [zoom, setZoom] = useState(14);
   const [bounds, setBounds] = useState(null);
   const mapRef = useRef();
@@ -164,7 +164,10 @@ export default function Map() {
   const getParks = useQuery(
     ["getParks"],
     async () => {
-      const querySnapshot = await getDocs(query(collection(database, "parks")));
+      const parkRef = collection(database, "parks");
+      const q = query(parkRef, where("city", "==", "Québec"));
+
+      const querySnapshot = await getDocs(q);
       const parks: Park[] = [];
       querySnapshot.forEach((doc) => {
         const park = doc.data();
@@ -261,9 +264,12 @@ export default function Map() {
   function handleExpand(value: boolean) {
     setCardIsExpand(value);
   }
-  if (!geolocation.longitude || !geolocation.latitude) {
-    return null;
-  }
+
+  const geolocation = { longitude: -71.2205628, latitude: 46.807973 };
+
+  // if (!geolocation.longitude || !geolocation.latitude) {
+  //   return null;
+  // }
 
   return (
     <Authenticated>
