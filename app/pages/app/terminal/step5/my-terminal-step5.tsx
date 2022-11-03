@@ -62,6 +62,7 @@ export default function MyTerminalStep5() {
             weekEndStart: terminal_step5_time.weekEndStart,
             weekEndEnd: terminal_step5_time.weekEndEnd,
             visible: false,
+            createdAt: new Date().toISOString(),
           },
         ],
       },
@@ -80,6 +81,7 @@ export default function MyTerminalStep5() {
       zip: terminal_step4_address.zip,
       visible: false,
       parkName: "Parc de " + user.displayName,
+      createdAt: new Date().toISOString(),
       terminals: [
         {
           chargeLevel: "Niveau 1",
