@@ -19,21 +19,11 @@ export default function MyTerminalStep5() {
   const [enabled, setEnabled] = useState(false);
   const [enabled2, setEnabled2] = useState(false);
 
-  const [selectedTime, setSelectedTime] = useState<any>({
-    weekStart: "",
-    weekEnd: "",
-    weekEndStart: "",
-    weekEndEnd: "",
-  });
   const auth = getAuth(app);
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
 
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
-  function handleSelectedTime(time: string, key: string) {
-    setSelectedTime({ ...selectedTime, [key]: time });
-    localStorage.setItem("terminal_step5_time", JSON.stringify(selectedTime));
-  }
 
   async function handleAddTerminal() {
     if (!user) return;
@@ -44,7 +34,6 @@ export default function MyTerminalStep5() {
     var terminal_step2_teminal_name = localStorage.getItem("terminal_step2_teminal_name");
     var terminal_step2_terminal_type = localStorage.getItem("terminal_step2_teminal_type");
     var terminal_step4_address = JSON.parse(localStorage.getItem("terminal_step4_address") || "{}");
-    var terminal_step5_time = JSON.parse(localStorage.getItem("terminal_step5_time") || "{}");
 
     const docSnap = await setDoc(
       usersRef,
@@ -57,10 +46,6 @@ export default function MyTerminalStep5() {
             instruction: terminal_step4_address.instruction,
             latitude: "-71.2205628",
             longitude: "46.807973",
-            weekStart: terminal_step5_time.weekStart,
-            weekEnd: terminal_step5_time.weekEnd,
-            weekEndStart: terminal_step5_time.weekEndStart,
-            weekEndEnd: terminal_step5_time.weekEndEnd,
             visible: false,
           },
         ],
