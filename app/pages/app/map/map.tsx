@@ -179,9 +179,9 @@ export default function Map() {
           terminals: park.terminals?.map((t) => ({
             name: t.stationName,
             available: t.status === "available",
-            type: "Niveau 2",
+            type: t.chargeLevel,
           })),
-          city: park.region,
+          city: park.city,
           streetAddress: park.street,
           visible: park.visible,
         });
