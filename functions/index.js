@@ -89,6 +89,8 @@ exports.updateTerminalsStatusInGivenCity = functions.https.onRequest(
     cors(request, response, async () => {
       const city = request.body.city;
       const _status = request.body.status;
+      const notificationVisibility = request.body.notificationVisibility;
+
       const parks = await admin
         .firestore()
         .collection("parks")
@@ -112,6 +114,14 @@ exports.updateTerminalsStatusInGivenCity = functions.https.onRequest(
 
         await admin.firestore().collection("parks").doc(park.id).update({
           terminals: updatedTerminals,
+        });
+      });
+
+      // update all document of notifications collection
+      const notifications = await admin.firestore().collection("notifications").get();
+      notifications.forEach(async (notification) => {
+        await admin.firestore().collection("notifications").doc(notification.id).update({
+          'visible': notificationVisibility,
         });
       });
       response.status(200).send("OK");
