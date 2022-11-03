@@ -164,8 +164,8 @@ export default function Map() {
   const getParks = useQuery(
     ["getParks"],
     async () => {
-      const transactionRef = collection(database, "transactions");
-      const q = query(transactionRef, where("city", "==", "Québec"));
+      const parkRef = collection(database, "parks");
+      const q = query(parkRef, where("city", "==", "Québec"));
 
       const querySnapshot = await getDocs(q);
       const parks: Park[] = [];
