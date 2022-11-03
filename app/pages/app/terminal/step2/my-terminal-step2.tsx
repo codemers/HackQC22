@@ -21,6 +21,18 @@ export default function MyTerminalStep2() {
 
   function handleSelectButton(terminalType: TerminalType) {
     setSelectButton(terminalType);
+
+    localStorage.setItem("terminal_step2_teminal_type", selectButton.toString());
+
+    if (terminalType === TerminalType.EVDuty40) {
+      localStorage.setItem("terminal_step2_teminal_name", "EVduty-40 (30A)");
+    } else if (terminalType === TerminalType.FLO) {
+      localStorage.setItem("terminal_step2_teminal_name", "FLO Maison™ X5");
+    } else if (terminalType === TerminalType.TeslaWall) {
+      localStorage.setItem("terminal_step2_teminal_name", "Tesla Wall Connector");
+    } else if (terminalType === TerminalType.Other) {
+      localStorage.setItem("terminal_step2_teminal_name", "Borne de recharge autre");
+    }
   }
 
   return (
