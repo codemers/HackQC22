@@ -158,7 +158,6 @@ export default function Map() {
   // const geolocation = useGeolocation();
   const [zoom, setZoom] = useState(14);
   const [bounds, setBounds] = useState(null);
-  const mapRef = useRef();
   const [filteredParks, setFilteredParks] = useState<Park[]>([]);
 
   const getParks = useQuery(
@@ -258,7 +257,7 @@ export default function Map() {
       }),
     bounds,
     zoom,
-    options: { radius: 275, maxZoom: 35 },
+    options: { radius: 275, maxZoom: 18 },
   });
 
   function handleExpand(value: boolean) {
@@ -339,6 +338,7 @@ export default function Map() {
             const { cluster: isCluster, point_count: pointCount } =
               cluster.properties;
 
+            console.log(cluster);
             if (isCluster) {
               // @ts-ignore
               return (
