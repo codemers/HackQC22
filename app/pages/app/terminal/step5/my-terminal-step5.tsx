@@ -55,8 +55,8 @@ export default function MyTerminalStep5() {
             type: terminal_step2_terminal_type,
             address: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
             instruction: terminal_step4_address.instruction,
-            latitude: "-71.2205628",
-            longitude: "46.807973",
+            longitude: "-71.2205628",
+            latitude: "46.807973",
             weekStart: terminal_step5_time.weekStart,
             weekEnd: terminal_step5_time.weekEnd,
             weekEndStart: terminal_step5_time.weekEndStart,
@@ -72,8 +72,8 @@ export default function MyTerminalStep5() {
     // Adding terminal to parks
     const parksSnap = await addDoc(collection(database, "parks"), {
       adresse: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
-      latitude: "-71.2205628",
-      longitude: "46.807973",
+      longitude: "-71.2205628",
+      latitude: "46.807973",
       type: "private",
       city: terminal_step4_address.city,
       region: "Québec",
