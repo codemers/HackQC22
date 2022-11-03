@@ -152,14 +152,9 @@ export default function ParkCard(props: Props) {
           </div>
         </div>
         <div className="flex justify-between w-full">
-          <div
-            className={cx(
-              "px-2 rounded-md mt-2",
-              parkAvailable ? "bg-[#8ABF55]" : "bg-red-500"
-            )}
-          >
+          <div className={cx("px-2 rounded-md mt-2", "bg-[#8ABF55]")}>
             <span className="text-white text-sm">
-              {parkAvailable ? "Disponible" : "Indisponible"}
+              {parkAvailable ? "Disponible" : "Réservée"}
             </span>
           </div>
 
