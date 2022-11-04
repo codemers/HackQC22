@@ -16,8 +16,6 @@ export default function Terminal() {
     const [user, loading, error] = useAuthState(auth);
     const [terminal, setTerminal] = useState<any>();
 
-    console.log(uid);
-
     useEffect(() => {
         const fetchData = async () => {
             if(!user) return;
@@ -46,8 +44,6 @@ export default function Terminal() {
         .catch(console.error);
     }, [user, uid]);
 
-    console.log("Terminal", terminal);
-
     return (
         <Authenticated adminView={true} className="bg-slate-100">
             <div className="h-14 text-xl grid grid-cols-5 border-b-2 bg-white">
@@ -57,13 +53,32 @@ export default function Terminal() {
                     </Link>
                 </p>
                 <p className="col-span-3 col-start-2 m-auto text-center">
-                    Test
+                    {terminal && terminal.name ? terminal.name : "Borne de recharge"}
                 </p>
             </div>
-            <div className="bg-slate-100">
-                <div className="aboutTerminal">
-                    <p>À propos</p>
-                    <div className="map">
+            <div className="bg-slate-100 h-full">
+                <div className="pl-[10%] pr-[10%] mt-10">
+                    <div>
+                        <p>À propos</p>
+                        <div className="map min-h-[200px] text-center m-auto align-middle border-gray-800 border-solid border-2">
+                            [Position de ma borne]   
+                        </div>
+                    </div>
+                    <div className="mt-6">
+                        <div>
+                            <p>Semaine</p>
+                            <input type="text" placeholder="8:00" className="w-20 mr-2 rounded-sm"/>à<input type="text" placeholder="18:00" className="w-20 ml-2 rounded-sm"/>
+                        </div>
+                        <div className="mt-4">
+                            <p>Fin de semaine</p>
+                            <input type="text" placeholder="8:00" className="w-20 mr-2 rounded-sm"/>à<input type="text" placeholder="18:00" className="w-20 ml-2 rounded-sm"/>
+                        </div>
+                        <div className="mt-10">
+                            <p className="font-bold underline">Paramètres avancés (par jour)</p>
+                        </div>
+                    </div>
+                    <div className="mt-20">
+                        <p className="text-red-500 font-bold">Supprimer ma borne</p>
                     </div>
                 </div>
             </div>
