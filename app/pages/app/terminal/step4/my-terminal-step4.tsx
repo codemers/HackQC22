@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
+import { Switch } from "@headlessui/react";
+import cx from "classix";
 
 export default function MyTerminalStep4() {
+  const [enabled, setEnabled] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<any>({
     address: "",
     appartement: "",
@@ -17,7 +20,10 @@ export default function MyTerminalStep4() {
   function handleSelectedAddress(value: any, key: string) {
     setSelectedAddress({ ...selectedAddress, [key]: value });
 
-    localStorage.setItem("terminal_step4_address", JSON.stringify(selectedAddress));
+    localStorage.setItem(
+      "terminal_step4_address",
+      JSON.stringify(selectedAddress)
+    );
   }
 
   return (
@@ -142,19 +148,36 @@ export default function MyTerminalStep4() {
               </div>
             </div> */}
 
-            <div className="relative mb-3 rounded-md shadow-sm">
-              <label className="block mb-2 text-lg font-medium text-gray-900">
-                Instructions pour s’y rendre
-              </label>
-              <textarea
-                value={selectedAddress.instruction}
-                onChange={(e) =>
-                  handleSelectedAddress(e.target.value, "instruction")
-                }
-                className="block w-full rounded-md border-[#133B62] sm:text-sm"
-              />
+            <div className="flex items-center w-full justify-between">
+              <div>
+                <p className="text-lg"> Montrer votre adresse précise</p>
+                <p className="text-gray-500">
+                  Nous ne communiquerons votre <br />
+                  adresse qu'une fois la réservation effectuée.
+                </p>
+              </div>
+              <Switch
+                checked={enabled}
+                onChange={setEnabled}
+                className={cx(
+                  enabled ? "bg-[#02B3C9]" : "bg-gray-200",
+                  "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                )}
+              >
+                <span className="sr-only">Use setting</span>
+                <span
+                  aria-hidden="true"
+                  className={cx(
+                    enabled ? "translate-x-5" : "translate-x-0",
+                    "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                  )}
+                />
+              </Switch>
             </div>
-
+          </div>
+        </div>
+        <div className="absolute z-50 bottom-0 flex justify-end w-full bg-white pr-4 pb-4">
+          <div className="">
             <Link href="/app/terminal/step5" className="mb-6">
               <button className="w-full mb-4 p-3 pr-6 pl-6 align-middle border solid rounded-3xl bg-[#02B3C9] text-white text-center font-bold">
                 Confirmer
