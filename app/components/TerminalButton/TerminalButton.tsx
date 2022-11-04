@@ -18,8 +18,8 @@ export default function TerminalButton(props: TerminalButtonProps) {
             </span>
             <span className="col-span-4 flex">
                 <div className="flex-column flex-grow flex-wrap">
-                    <span className="title block">{props.name}</span>
-                    <span className="subtitle block">{props.address}</span>
+                    <span className="title block text-lg">{props.name}</span>
+                    <span className="subtitle block text-base text-gray-500">{props.address}</span>
                 </div>
             </span>
             <span><ChevronRightIcon className="w-4 h-4 inline-block float-right"/></span>
