@@ -33,7 +33,7 @@ type Props = {
 export default function ParkCard(props: Props) {
   const { park, onExpand } = props;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const queryClient = useQueryClient();
   const terminals = park.terminals;
