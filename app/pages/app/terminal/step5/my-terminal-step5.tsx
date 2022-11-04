@@ -31,9 +31,15 @@ export default function MyTerminalStep5() {
     setIsLoading(true);
     const usersRef = doc(database, "users", user.uid);
 
-    var terminal_step2_teminal_name = localStorage.getItem("terminal_step2_teminal_name");
-    var terminal_step2_terminal_type = localStorage.getItem("terminal_step2_teminal_type");
-    var terminal_step4_address = JSON.parse(localStorage.getItem("terminal_step4_address") || "{}");
+    var terminal_step2_teminal_name = localStorage.getItem(
+      "terminal_step2_teminal_name"
+    );
+    var terminal_step2_terminal_type = localStorage.getItem(
+      "terminal_step2_teminal_type"
+    );
+    var terminal_step4_address = JSON.parse(
+      localStorage.getItem("terminal_step4_address") || "{}"
+    );
 
     const docSnap = await setDoc(
       usersRef,
@@ -42,7 +48,16 @@ export default function MyTerminalStep5() {
           {
             name: terminal_step2_teminal_name,
             type: terminal_step2_terminal_type,
-            address: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
+            address:
+              terminal_step4_address.address +
+              " " +
+              terminal_step4_address.city +
+              " " +
+              terminal_step4_address.stat +
+              " " +
+              terminal_step4_address.zip +
+              " " +
+              terminal_step4_address.country,
             instruction: terminal_step4_address.instruction,
             longitude: "-71.2205628",
             latitude: "46.807973",
@@ -56,7 +71,16 @@ export default function MyTerminalStep5() {
 
     // Adding terminal to parks
     const parksSnap = await addDoc(collection(database, "parks"), {
-      adresse: terminal_step4_address.address + " " + terminal_step4_address.city + " " + terminal_step4_address.stat + " " + terminal_step4_address.zip + " " + terminal_step4_address.country,
+      adresse:
+        terminal_step4_address.address +
+        " " +
+        terminal_step4_address.city +
+        " " +
+        terminal_step4_address.stat +
+        " " +
+        terminal_step4_address.zip +
+        " " +
+        terminal_step4_address.country,
       longitude: "-71.2205628",
       latitude: "46.807973",
       type: "private",
@@ -66,16 +90,17 @@ export default function MyTerminalStep5() {
       zip: terminal_step4_address.zip,
       owner: user.uid,
       visible: false,
-      parkName: "Parc de " + user.displayName,
+      parkName: "Borne de " + user.displayName,
       createdAt: new Date().toISOString(),
       terminals: [
         {
           chargeLevel: "Niveau 1",
-          stationName: "Borne " + terminal_step2_teminal_name + " de " + user.displayName,
+          stationName:
+            "Borne " + terminal_step2_teminal_name + " de " + user.displayName,
           status: "available",
           type: "private",
-        }
-      ]
+        },
+      ],
     });
 
     setIsLoading(false);
@@ -228,7 +253,7 @@ export default function MyTerminalStep5() {
             className="w-fit p-3  px-6 align-middle border solid rounded-3xl bg-[#02B3C9] text-white text-center inline-flex float-right"
             onClick={() => handleAddTerminal()}
           >
-            <span className="font-bold flex">Suivant</span>
+            <span className="font-bold flex">Ajouter</span>
           </button>
         )}
       </div>
