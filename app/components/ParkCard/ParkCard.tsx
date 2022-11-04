@@ -33,7 +33,7 @@ type Props = {
 export default function ParkCard(props: Props) {
   const { park, onExpand } = props;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const queryClient = useQueryClient();
   const terminals = park.terminals;
@@ -195,7 +195,7 @@ export default function ParkCard(props: Props) {
                 <div className="w-full flex flex-col items-center">
                   {isLoading ? (
                     <svg
-                      className="animate-spin h-5 w-5 mr-3 text-[#80c4e7]"
+                      className="animate-spin h-5 w-5 text-[#80c4e7]"
                       viewBox="0 0 24 24"
                     >
                       <ArrowPathIcon />
