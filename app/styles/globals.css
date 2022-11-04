@@ -19,11 +19,11 @@
 }
 
 #terminal-list .TerminalButton:first-of-type {
-    @apply rounded-t-md;
+    @apply rounded-t-xl;
 }
 
 #terminal-list .TerminalButton:last-of-type {
-    @apply rounded-b-md;
+    @apply rounded-b-xl;
 }
 
 .TerminalStep2 {

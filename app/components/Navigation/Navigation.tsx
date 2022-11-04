@@ -70,7 +70,7 @@ export default function Navigation({ adminView = false }: Props) {
                       fill={
                         router.pathname === "/app/terminal/list"
                           ? "#00A0B4"
-                          : "#A2A2A2"
+                          : "#133B62"
                       }
                     />
                   </g>
@@ -102,7 +102,7 @@ export default function Navigation({ adminView = false }: Props) {
                       fill={
                         router.pathname === "/app/terminal/history"
                           ? "#00A0B4"
-                          : "#A2A2A2"
+                          : "#133B62"
                       }
                     />
                   </g>
@@ -129,7 +129,7 @@ export default function Navigation({ adminView = false }: Props) {
                   fill={
                     router.pathname === "/app/terminal/profile"
                       ? "#00A0B4"
-                      : "#A2A2A2"
+                      : "#133B62"
                   }
                 >
                   <g clip-path="url(#clip0_46_978)">
@@ -138,7 +138,7 @@ export default function Navigation({ adminView = false }: Props) {
                       fill={
                         router.pathname === "/app/terminal/profile"
                           ? "#00A0B4"
-                          : "#A2A2A2"
+                          : "#133B62"
                       }
                     />
                     <path
@@ -146,7 +146,7 @@ export default function Navigation({ adminView = false }: Props) {
                       fill={
                         router.pathname === "/app/terminal/profile"
                           ? "#00A0B4"
-                          : "#A2A2A2"
+                          : "#133B62"
                       }
                     />
                   </g>
