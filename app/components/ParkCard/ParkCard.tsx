@@ -5,6 +5,7 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 import XMarkIcon from "@heroicons/react/20/solid/XMarkIcon";
 import { Park, Reservation } from "../../pages/app/map/map";
 import {
+  ArrowPathIcon,
   ArrowUpRightIcon,
   CameraIcon,
   ChatBubbleLeftIcon,
@@ -32,6 +33,7 @@ type Props = {
 export default function ParkCard(props: Props) {
   const { park, onExpand } = props;
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const queryClient = useQueryClient();
   const terminals = park.terminals;
@@ -42,16 +44,19 @@ export default function ParkCard(props: Props) {
   );
 
   function handleReservation(e: any) {
+    setIsLoading(true);
     const functions = getFunctions();
     if (terminalReservedByMe) {
       const cancelReservation = httpsCallable(functions, "cancelReservation");
 
-      cancelReservation({ id: terminalReservedByMe.id, parkId: park.id }).then(
-        (result) => {
+      cancelReservation({ id: terminalReservedByMe.id, parkId: park.id })
+        .then((result) => {
           queryClient.invalidateQueries("getParks");
           queryClient.invalidateQueries("getReservations");
-        }
-      );
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
       return;
     }
     // alert("Reservation not implemented yet");
@@ -61,10 +66,14 @@ export default function ParkCard(props: Props) {
     addReservation({
       parkId: park.id,
       terminalId: terminals[0].name,
-    }).then(() => {
-      queryClient.invalidateQueries("getParks");
-      queryClient.invalidateQueries("getReservations");
-    });
+    })
+      .then(() => {
+        queryClient.invalidateQueries("getParks");
+        queryClient.invalidateQueries("getReservations");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -178,14 +187,27 @@ export default function ParkCard(props: Props) {
                 style={{ backgroundColor: "rgba(149, 216, 250, 0.3)" }}
                 onClick={handleReservation}
               >
-                <div>
-                  <CurrencyDollarIcon className="w-5 h-5 text-[#80c4e7]" />
-                </div>
-                <div className="w-full flex flex-col">
-                  <span className="text-sm text-[#80c4e7] ">
-                    {!!terminalReservedByMe ? "Annuler" : "Réserver"}
-                  </span>
-                  <span className="text-xs text-gray-600 ">1 crédit</span>
+                {!isLoading && (
+                  <div>
+                    <CurrencyDollarIcon className="w-5 h-5 text-[#80c4e7]" />
+                  </div>
+                )}
+                <div className="w-full flex flex-col items-center">
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 text-[#80c4e7]"
+                      viewBox="0 0 24 24"
+                    >
+                      <ArrowPathIcon />
+                    </svg>
+                  ) : (
+                    <>
+                      <span className="text-sm text-[#80c4e7] ">
+                        {!!terminalReservedByMe ? "Annuler" : "Réserver"}
+                      </span>
+                      <span className="text-xs text-gray-600 ">1 crédit</span>
+                    </>
+                  )}
                 </div>
               </button>
               <button

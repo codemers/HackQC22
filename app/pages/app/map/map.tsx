@@ -218,6 +218,7 @@ export default function Map() {
     },
     {
       onError: (e) => console.log(e),
+      refetchInterval: 5000,
     }
   );
 
@@ -281,7 +282,7 @@ export default function Map() {
       }),
     bounds,
     zoom,
-    options: { radius: 275, maxZoom: 18 },
+    options: { radius: 275, maxZoom: 14 },
   });
 
   function handleExpand(value: boolean) {
