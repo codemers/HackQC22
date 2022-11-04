@@ -9,7 +9,7 @@ export default function Profile() {
     >
       <Link href="/app/map">
         <button className="w-full h-14 border solid rounded-3xl bg-[#02B3C9] text-white uppercase text-xs mb-4 px-4">
-          Passer en mode "recherche"
+          {`Passer en mode "recherche"`}
         </button>
       </Link>
     </Authenticated>

@@ -152,8 +152,12 @@ export default function MyTerminalStep4() {
               <div>
                 <p className="text-lg"> Montrer votre adresse précise</p>
                 <p className="text-gray-500">
-                  Nous ne communiquerons votre <br />
-                  adresse qu'une fois la réservation effectuée.
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: `Nous ne communiquerons votre <br />
+                  adresse qu'une fois la réservation effectuée.`,
+                    }}
+                  ></span>
                 </p>
               </div>
               <Switch
